@@ -1,31 +1,39 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import { Header } from "../components/Header";
 import { TrincaLogo } from "../components/TrincaLogo";
 
 export function Subscribe() {
   const [fieldEmailValue, setFieldEmailValue] = useState("");
-  const [fieldNameValue, setFieldNameValue] = useState("");
+  const [fieldPasswordValue, setFieldPasswordValue] = useState("");
 
   const navigate = useNavigate();
 
-  function handleSubscribe(event: FormEvent) {
+  const { handleSignup } = useUser();
+
+  async function handleSubscribe(event: FormEvent) {
     event.preventDefault();
 
-    if (!fieldEmailValue.trim() || !fieldNameValue.trim()) {
+    if (!fieldEmailValue.trim() || !fieldPasswordValue.trim()) {
       alert("Preencha os campos");
       return;
     }
 
     setFieldEmailValue("");
-    setFieldNameValue("");
+    setFieldPasswordValue("");
+
+    await handleSignup({
+      password: fieldPasswordValue,
+      email: fieldEmailValue
+    });
 
     navigate("/dashboard");
   }
 
   return (
     <div className={`min-h-screen bg-barbecue bg-yellow`}>
-      <Header />
+      <Header className={`pt-[70px]`} title="Faça seu login" />
 
       <div
         className={`mt-16 w-screen max-w-xs mx-auto flex items-center 
@@ -64,7 +72,7 @@ export function Subscribe() {
                 type="password"
                 id="password"
                 placeholder="Sua senha"
-                onChange={e => setFieldNameValue(e.target.value)}
+                onChange={e => setFieldPasswordValue(e.target.value)}
                 className={`w-full h-[50px] rounded px-5 text-base border-2
                 border-transparent focus:border-black outline-0 transition-all
                 `}
