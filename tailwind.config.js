@@ -8,7 +8,11 @@ module.exports = {
       },
 
       colors: {
-        yellow: "#FFD836"
+        yellow: "#FFD836",
+        input: "#E1FAEC",
+        green: {
+          100: "#34CB79"
+        }
       },
 
       backgroundImage: {
