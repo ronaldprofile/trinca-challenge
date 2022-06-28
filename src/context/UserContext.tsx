@@ -5,61 +5,49 @@ import {
   useEffect,
   useState
 } from "react";
-import { useNavigate } from "react-router-dom";
 
-interface User {
-  password: string;
-  email: string;
-}
+import { useNavigate } from "react-router-dom";
+import { IUser } from "../types/user";
+import { getUserLocalStorage, setUserLocalStorage } from "../utils";
 
 interface UserContextProviderProps {
   children: ReactNode;
 }
 
 interface UserContextData {
-  user: User | null;
-  handleSignup: (user: User) => Promise<void>;
+  user: IUser | null;
+  signUp: (user: IUser) => Promise<void>;
   signOut: () => void;
 }
 
 const UserContext = createContext({} as UserContextData);
 
 export function UserContextProvider({ children }: UserContextProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
 
-  async function handleSignup(userData: User) {
-    localStorage.setItem("trinca-user", JSON.stringify(userData));
-    setUser(userData);
-  }
-
-  function signOut() {
-    localStorage.removeItem("trinca-user");
-    setUser(null);
-
-    navigate("/");
-  }
-
   useEffect(() => {
-    const userStorage = JSON.parse(localStorage.getItem("trinca-user")!);
+    const userStorage = getUserLocalStorage();
 
     if (userStorage) {
       setUser(userStorage);
     }
   }, []);
 
-  // useEffect(() => {
-  //   const userStorage = JSON.parse(localStorage.getItem("trinca-user")!);
+  async function signUp(userData: IUser | null) {
+    setUserLocalStorage(userData);
+    setUser(userData);
+  }
 
-  //   if (!userStorage) {
-  //     console.log("não existi");
+  function signOut() {
+    // setUserLocalStorage(null);
+    setUser(null);
 
-  //     navigate("/");
-  //   }
-  // }, []);
+    navigate("/");
+  }
 
   return (
-    <UserContext.Provider value={{ user, handleSignup, signOut }}>
+    <UserContext.Provider value={{ user, signUp, signOut }}>
       {children}
     </UserContext.Provider>
   );
