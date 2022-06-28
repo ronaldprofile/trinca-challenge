@@ -1,34 +1,18 @@
-import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useState } from "react";
 import { Header } from "../components/Header";
 import { TrincaLogo } from "../components/TrincaLogo";
+import { ModalSignup } from "../components/ModalSignup";
+import { Button } from "../components/Button";
 
 export function Subscribe() {
-  const [fieldEmailValue, setFieldEmailValue] = useState("");
-  const [fieldPasswordValue, setFieldPasswordValue] = useState("");
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const navigate = useNavigate();
+  function closeModal() {
+    setIsOpenModal(false);
+  }
 
-  const { handleSignup } = useUser();
-
-  async function handleSubscribe(event: FormEvent) {
-    event.preventDefault();
-
-    if (!fieldEmailValue.trim() || !fieldPasswordValue.trim()) {
-      alert("Preencha os campos");
-      return;
-    }
-
-    setFieldEmailValue("");
-    setFieldPasswordValue("");
-
-    await handleSignup({
-      password: fieldPasswordValue,
-      email: fieldEmailValue
-    });
-
-    navigate("/dashboard");
+  function openModal() {
+    setIsOpenModal(true);
   }
 
   return (
@@ -37,10 +21,10 @@ export function Subscribe() {
 
       <div
         className={`mt-16 w-screen max-w-xs mx-auto flex items-center 
-        flex-col gap-32`}
+        flex-col gap-16`}
       >
         <div className="w-full">
-          <form onSubmit={handleSubscribe}>
+          <form>
             <div className={`mb-9 flex flex-col gap-4`}>
               <label
                 htmlFor="email"
@@ -53,7 +37,6 @@ export function Subscribe() {
                 type="email"
                 id="email"
                 placeholder="Seu E-mail"
-                onChange={e => setFieldEmailValue(e.target.value)}
                 className={`w-full h-[50px] rounded px-5 text-base
                 border-2 border-transparent focus:border-black outline-0 transition-all
                 `}
@@ -72,27 +55,46 @@ export function Subscribe() {
                 type="password"
                 id="password"
                 placeholder="Sua senha"
-                onChange={e => setFieldPasswordValue(e.target.value)}
                 className={`w-full h-[50px] rounded px-5 text-base border-2
                 border-transparent focus:border-black outline-0 transition-all
                 `}
               />
             </div>
 
-            <button
+            <Button
               type="submit"
-              className={`w-full h-[50px] mt-[74px] uppercase text-base bg-black 
-              text-white font-bold rounded hover:bg-black/95 transition-colors
-            `}
+              className="w-full mt-12 bg-black/90 text-white"
             >
               entrar
-            </button>
+            </Button>
           </form>
+
+          <div className={`mt-6 flex flex-col gap-4`}>
+            <div
+              className={`flex items-center  before:h-[1px] before:flex-1
+            before:bg-black before:mr-4 after:h-[1px] after:bg-black 
+              after:flex-1 after:ml-4`}
+            >
+              ou
+            </div>
+
+            <Button
+              type="button"
+              onClick={openModal}
+              className="border border-black hover:bg-black hover:text-white"
+            >
+              Criar minha conta
+            </Button>
+          </div>
         </div>
 
         <footer>
           <TrincaLogo />
         </footer>
+
+        {isOpenModal && (
+          <ModalSignup isOpen={isOpenModal} closeModal={closeModal} />
+        )}
       </div>
     </div>
   );
