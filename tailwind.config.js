@@ -16,7 +16,7 @@ module.exports = {
       },
 
       backgroundImage: {
-        barbecue: "url(./src/assets/background.svg)"
+        barbecue: "url(/src/assets/background.svg)"
       }
     }
   },

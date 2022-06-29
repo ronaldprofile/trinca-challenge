@@ -5,7 +5,7 @@ import moneyIcon from "../assets/money.svg";
 export function Card() {
   return (
     <Link
-      to={"#"}
+      to={`/details`}
       title="ver detalhes"
       className={`w-full p-6 bg-white text-black shadow-md rounded-sm
         border-2 border-transparent hover:-translate-y-1 transition-all
