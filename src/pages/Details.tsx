@@ -1,12 +1,24 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
-import { ArrowLeft, Users } from "phosphor-react";
-import { Link } from "react-router-dom";
 import { ItemList } from "../components/List/ItemList";
+import { ModalAddMember } from "../components/ModalAddMember";
+import { ArrowLeft, Users } from "phosphor-react";
 import peopleIcon from "../assets/people.svg";
 import moneyIcon from "../assets/money.svg";
 
 export function Details() {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  function closeModal() {
+    setIsOpenModal(false);
+  }
+
+  function openModal() {
+    setIsOpenModal(true);
+  }
+
   return (
     <div className="min-h-screen">
       <Header className="h-80 pt-[70px] bg-barbecue bg-yellow" />
@@ -23,6 +35,7 @@ export function Details() {
 
             <Button
               type="button"
+              onClick={openModal}
               className="flex items-center gap-2 bg-black text-white text-sm"
             >
               <Users size={24} />
@@ -59,6 +72,10 @@ export function Details() {
           </div>
         </div>
       </main>
+
+      {isOpenModal && (
+        <ModalAddMember isOpen={isOpenModal} closeModal={closeModal} />
+      )}
     </div>
   );
 }
