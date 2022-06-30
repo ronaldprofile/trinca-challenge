@@ -3,10 +3,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { X } from "phosphor-react";
 import clsx from "clsx";
 
-interface ModalProps {
+export interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export function Modal({ isOpen, closeModal, children }: ModalProps) {
@@ -23,7 +23,7 @@ export function Modal({ isOpen, closeModal, children }: ModalProps) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
+            <div className="fixed inset-0 bg-black/90 " />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -40,7 +40,7 @@ export function Modal({ isOpen, closeModal, children }: ModalProps) {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <button
                     className={
-                      "absolute top-8 right-4 hover:scale-110 hover:rotate-90 transition-transform"
+                      "absolute top-9 right-4 hover:scale-110 hover:rotate-90 transition-transform"
                     }
                     title="fechar modal"
                     onClick={closeModal}
