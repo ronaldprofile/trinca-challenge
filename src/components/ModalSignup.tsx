@@ -1,15 +1,12 @@
 import { useState, FormEvent } from "react";
-import { Modal, ModalDescription, ModalTitle } from "./Modal";
+import { Modal, ModalDescription, ModalProps, ModalTitle } from "./Modal";
 import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "./Button";
 import { Input } from "./Input";
 
-interface ModalSignupProps {
-  isOpen: boolean;
-  closeModal: () => void;
-}
+interface ModalSignupProps extends ModalProps {}
 
 export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
   const { signUp } = useUser();
