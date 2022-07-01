@@ -1,6 +1,6 @@
+import { Modal, ModalProps, ModalTitle } from "./Modal";
 import { Button } from "./Button";
 import { Input } from "./Input";
-import { Modal, ModalProps, ModalTitle } from "./Modal";
 
 interface ModalAddMemberProps extends ModalProps {}
 
@@ -18,8 +18,9 @@ export function ModalAddMember({ isOpen, closeModal }: ModalAddMemberProps) {
             <Input
               type="text"
               id="name"
+              shape="secondary"
+              className="w-full focus-effect"
               placeholder="Nome do membro"
-              className="bg-input"
             />
           </div>
 
@@ -31,7 +32,8 @@ export function ModalAddMember({ isOpen, closeModal }: ModalAddMemberProps) {
               <Input
                 type="number"
                 id="contribution"
-                className="bg-input"
+                shape="secondary"
+                className="w-full focus-effect"
                 placeholder="Contribuição do membro"
               />
             </div>
@@ -46,7 +48,7 @@ export function ModalAddMember({ isOpen, closeModal }: ModalAddMemberProps) {
             </div> */}
           </div>
 
-          <Button className="mt-8 w-full bg-black text-white text-base">
+          <Button className="mt-8 w-full text-base focus-effect focus:ring-black">
             Adicionar
           </Button>
         </form>

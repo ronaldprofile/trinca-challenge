@@ -46,23 +46,23 @@ export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
         <div className="mb-8 flex flex-col gap-3">
           <Input
             type="email"
-            className="bg-input"
             placeholder="Seu E-mail"
             onChange={e => setFieldEmailValue(e.target.value)}
+            shape="secondary"
+            className="focus-effect"
           />
+
           <Input
             type="password"
-            className="bg-input"
             placeholder="Sua senha"
             onChange={e => setFieldPasswordValue(e.target.value)}
+            shape="secondary"
+            className="focus-effect"
           />
         </div>
 
         <footer className="w-full">
-          <Button
-            type="submit"
-            className="w-full bg-green-100 text-white border-green-100 hover:opacity-95"
-          >
+          <Button color="green" className="w-full focus-effect">
             salvar
           </Button>
         </footer>

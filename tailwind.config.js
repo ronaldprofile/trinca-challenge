@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         yellow: "#FFD836",
         input: "#E1FAEC",
+        label: "#6C6C80",
         green: {
           100: "#34CB79"
         }

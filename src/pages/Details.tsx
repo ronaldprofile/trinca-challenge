@@ -27,16 +27,18 @@ export function Details() {
         <div className={`px-6`}>
           <div className="mb-6 flex items-center justify-between">
             <Link to="/dashboard">
-              <Button className="flex items-center gap-2 text-sm hover:text-white hover:bg-black">
+              <Button
+                className="flex items-center gap-2 text-sm"
+                shape="secondary"
+              >
                 <ArrowLeft size={24} />
                 Voltar
               </Button>
             </Link>
 
             <Button
-              type="button"
               onClick={openModal}
-              className="flex items-center gap-2 bg-black text-white text-sm"
+              className="flex items-center gap-2 text-sm focus-effect focus:ring-black"
             >
               <Users size={24} />
               Adicionar membro
