@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { Header } from "../components/Header";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
+import { ModalAddBarbecue } from "../components/ModalAddBarbecue";
 import { SignOut } from "phosphor-react";
 
 export function Dashboard() {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  function closeModal() {
+    setIsOpenModal(false);
+  }
+
+  function openModal() {
+    setIsOpenModal(true);
+  }
+
   return (
     <div className={`min-h-screen overflow-x-hidden`}>
       <Header className={`pt-[70px] h-80 bg-barbecue bg-yellow`} />
@@ -11,13 +23,15 @@ export function Dashboard() {
       <main className={`-mt-28`}>
         <div className={`px-6`}>
           <div className="mb-6 flex items-center justify-end gap-3">
-            <Button type="button" className="text-sm text-white bg-black">
+            <Button onClick={openModal} className="text-sm text-white bg-black">
               Adicionar Churras
             </Button>
 
             <Button
               type="button"
-              className="text-sm flex items-center gap-2 hover:bg-red-600 hover:text-white hover:border-red-600"
+              shape="secondary"
+              danger
+              className="text-sm flex items-center gap-2"
             >
               <SignOut size={24} />
               sair
@@ -32,6 +46,10 @@ export function Dashboard() {
           </div>
         </div>
       </main>
+
+      {isOpenModal && (
+        <ModalAddBarbecue isOpen={isOpenModal} closeModal={closeModal} />
+      )}
     </div>
   );
 }

@@ -1,15 +1,12 @@
 import { useState, FormEvent } from "react";
-import { Modal, ModalDescription, ModalTitle } from "./Modal";
+import { Modal, ModalDescription, ModalProps, ModalTitle } from "./Modal";
 import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "./Button";
 import { Input } from "./Input";
 
-interface ModalSignupProps {
-  isOpen: boolean;
-  closeModal: () => void;
-}
+interface ModalSignupProps extends ModalProps {}
 
 export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
   const { signUp } = useUser();
@@ -49,23 +46,23 @@ export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
         <div className="mb-8 flex flex-col gap-3">
           <Input
             type="email"
-            className="bg-input"
             placeholder="Seu E-mail"
             onChange={e => setFieldEmailValue(e.target.value)}
+            shape="secondary"
+            className="focus-effect"
           />
+
           <Input
             type="password"
-            className="bg-input"
             placeholder="Sua senha"
             onChange={e => setFieldPasswordValue(e.target.value)}
+            shape="secondary"
+            className="focus-effect"
           />
         </div>
 
         <footer className="w-full">
-          <Button
-            type="submit"
-            className="w-full bg-green-100 text-white border-green-100 hover:opacity-95"
-          >
+          <Button color="green" className="w-full focus-effect">
             salvar
           </Button>
         </footer>

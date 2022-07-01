@@ -1,20 +1,34 @@
-import { InputHTMLAttributes } from "react";
-import clsx from "clsx";
+import { styled } from "../../stitches.config";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  className?: string;
-}
+export const Input = styled("input", {
+  height: 50,
+  padding: "0 20px",
+  fontSize: 16,
+  transition: ".2s all",
+  borderRadius: 4,
 
-export function Input({ className, ...props }: InputProps) {
-  return (
-    <input
-      type="text"
-      {...props}
-      className={clsx(
-        `w-full h-[50px] rounded px-5 text-base border-2 border-transparent
-   focus:border-black outline-0 transition-all`,
-        className
-      )}
-    />
-  );
-}
+  variants: {
+    shape: {
+      primary: {
+        background: "White",
+
+        "&:focus": {
+          border: "1px solid Black",
+          outline: "none"
+        }
+      },
+
+      secondary: {
+        background: "#E1FAEC",
+        border: "1px solid #d1d5db",
+        "&:focus": {
+          outline: "none"
+        }
+      }
+    }
+  },
+
+  defaultVariants: {
+    shape: "primary"
+  }
+});

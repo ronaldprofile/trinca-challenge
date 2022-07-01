@@ -3,6 +3,7 @@ import { Header } from "../components/Header";
 import { TrincaLogo } from "../components/TrincaLogo";
 import { ModalSignup } from "../components/ModalSignup";
 import { Button } from "../components/Button";
+import { Input } from "../components/Input";
 
 export function Subscribe() {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -33,14 +34,7 @@ export function Subscribe() {
                 Login
               </label>
 
-              <input
-                type="email"
-                id="email"
-                placeholder="Seu E-mail"
-                className={`w-full h-[50px] rounded px-5 text-base
-                border-2 border-transparent focus:border-black outline-0 transition-all
-                `}
-              />
+              <Input type="email" id="email" placeholder="Seu E-mail" />
             </div>
 
             <div className={`flex flex-col gap-4`}>
@@ -51,22 +45,10 @@ export function Subscribe() {
                 Senha
               </label>
 
-              <input
-                type="password"
-                id="password"
-                placeholder="Sua senha"
-                className={`w-full h-[50px] rounded px-5 text-base border-2
-                border-transparent focus:border-black outline-0 transition-all
-                `}
-              />
+              <Input type="password" id="password" placeholder="Sua senha" />
             </div>
 
-            <Button
-              type="submit"
-              className="w-full mt-12 bg-black/90 text-white"
-            >
-              entrar
-            </Button>
+            <Button className="w-full mt-12">entrar</Button>
           </form>
 
           <div className={`mt-6 flex flex-col gap-4`}>
@@ -78,11 +60,7 @@ export function Subscribe() {
               ou
             </div>
 
-            <Button
-              type="button"
-              onClick={openModal}
-              className="border border-black hover:bg-black hover:text-white"
-            >
+            <Button type="button" onClick={openModal} shape="secondary">
               Criar minha conta
             </Button>
           </div>

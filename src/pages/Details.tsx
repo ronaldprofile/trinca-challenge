@@ -1,12 +1,24 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
-import { ArrowLeft, Users } from "phosphor-react";
-import { Link } from "react-router-dom";
 import { ItemList } from "../components/List/ItemList";
+import { ModalAddMember } from "../components/ModalAddMember";
+import { ArrowLeft, Users } from "phosphor-react";
 import peopleIcon from "../assets/people.svg";
 import moneyIcon from "../assets/money.svg";
 
 export function Details() {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  function closeModal() {
+    setIsOpenModal(false);
+  }
+
+  function openModal() {
+    setIsOpenModal(true);
+  }
+
   return (
     <div className="min-h-screen">
       <Header className="h-80 pt-[70px] bg-barbecue bg-yellow" />
@@ -15,15 +27,18 @@ export function Details() {
         <div className={`px-6`}>
           <div className="mb-6 flex items-center justify-between">
             <Link to="/dashboard">
-              <Button className="flex items-center gap-2 text-sm hover:text-white hover:bg-black">
+              <Button
+                className="flex items-center gap-2 text-sm"
+                shape="secondary"
+              >
                 <ArrowLeft size={24} />
                 Voltar
               </Button>
             </Link>
 
             <Button
-              type="button"
-              className="flex items-center gap-2 bg-black text-white text-sm"
+              onClick={openModal}
+              className="flex items-center gap-2 text-sm focus-effect focus:ring-black"
             >
               <Users size={24} />
               Adicionar membro
@@ -59,6 +74,10 @@ export function Details() {
           </div>
         </div>
       </main>
+
+      {isOpenModal && (
+        <ModalAddMember isOpen={isOpenModal} closeModal={closeModal} />
+      )}
     </div>
   );
 }
