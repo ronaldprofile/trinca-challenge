@@ -37,7 +37,7 @@ export function Modal({ isOpen, closeModal, children }: ModalProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-h-[90vh] max-w-xl transform overflow-hidden rounded bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <button
                     className={
                       "absolute top-9 right-4 hover:scale-110 hover:rotate-90 transition-transform"
