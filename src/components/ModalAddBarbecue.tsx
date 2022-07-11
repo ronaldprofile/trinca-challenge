@@ -1,19 +1,55 @@
+import { FormEvent, useState } from "react";
+import { Modal, ModalProps, ModalTitle } from "./Modal";
 import { Button } from "./Button";
 import { Input } from "./Input";
-import { Modal, ModalProps, ModalTitle } from "./Modal";
+import { v4 as useId } from "uuid";
+import { toast } from "react-toastify";
+import { IBarbecue } from "../types";
 
-interface ModalAddBarbecueProps extends ModalProps {}
+interface ModalAddBarbecueProps extends ModalProps {
+  onAddBarbecue: (barbecueEvent: IBarbecue) => Promise<void>;
+}
 
 export function ModalAddBarbecue({
   isOpen,
-  closeModal
+  closeModal,
+  onAddBarbecue
 }: ModalAddBarbecueProps) {
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [informationAdditional, setInformationAdditional] = useState("");
+
+  async function handleAddBarbecue(event: FormEvent) {
+    event.preventDefault();
+
+    if (!title.trim() || !date) {
+      toast.error("Preencha todos os campos", { theme: "colored" });
+      return;
+    }
+
+    await onAddBarbecue({
+      id: useId(),
+      title,
+      date: new Date(date),
+      informationAdditional,
+      members: [],
+      totalAmountCollected: 0
+    });
+
+    toast.success("Churras adicionado", { theme: "colored" });
+
+    setTitle("");
+    setInformationAdditional("");
+    setDate("");
+    closeModal();
+  }
+
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
       <ModalTitle title="Adicionar churra" />
 
       <div className="mt-8">
-        <form>
+        <form onSubmit={handleAddBarbecue}>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <label
@@ -25,6 +61,8 @@ export function ModalAddBarbecue({
               <Input
                 type="text"
                 id="name_event"
+                onChange={e => setTitle(e.target.value)}
+                value={title}
                 shape="secondary"
                 className="focus-effect"
               />
@@ -40,6 +78,8 @@ export function ModalAddBarbecue({
               <Input
                 type="date"
                 id="date_event"
+                onChange={e => setDate(e.target.value)}
+                value={date}
                 shape="secondary"
                 className="focus-effect"
               />
@@ -55,6 +95,8 @@ export function ModalAddBarbecue({
 
               <textarea
                 id="information"
+                onChange={e => setInformationAdditional(e.target.value)}
+                value={informationAdditional}
                 placeholder="Informações importantes sobre o evento"
                 className="py-3 px-5 min-h-[112px] w-full text-base bg-input resize-none shadow-sm focus:outline-none focus-effect border border-gray-300 rounded transition-all"
               />
