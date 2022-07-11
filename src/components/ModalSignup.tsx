@@ -1,10 +1,10 @@
 import { useState, FormEvent } from "react";
-import { Modal, ModalDescription, ModalProps, ModalTitle } from "./Modal";
-import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { useUser } from "../context/UserContext";
+import { Modal, ModalDescription, ModalProps, ModalTitle } from "./Modal";
 import { Button } from "./Button";
 import { Input } from "./Input";
+import { toast } from "react-toastify";
 
 interface ModalSignupProps extends ModalProps {}
 
@@ -19,18 +19,30 @@ export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
     event.preventDefault();
 
     if (!fieldEmailValue.trim() || !fieldPasswordValue.trim()) {
-      alert("Preencha os campos");
+      toast.error("Preencha os campos", { theme: "colored" });
       return;
     }
 
+    const subscribeUserAfterTheeSeconds = new Promise(resolve =>
+      setTimeout(async () => {
+        await signUp({ password: fieldPasswordValue, email: fieldEmailValue });
+
+        resolve("user subscribed with successful");
+      }, 3000)
+    );
+
+    await toast.promise(
+      subscribeUserAfterTheeSeconds,
+      {
+        pending: "Cadastrando usuário...",
+        success: "Woow, deu tudo certo"
+      },
+      { theme: "colored" }
+    );
+
     setFieldEmailValue("");
     setFieldPasswordValue("");
-
-    await signUp({
-      password: fieldPasswordValue,
-      email: fieldEmailValue
-    });
-
+    closeModal();
     navigate("/dashboard");
   }
 
@@ -48,6 +60,7 @@ export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
             type="email"
             placeholder="Seu E-mail"
             onChange={e => setFieldEmailValue(e.target.value)}
+            value={fieldEmailValue}
             shape="secondary"
             className="focus-effect"
           />
@@ -56,6 +69,7 @@ export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
             type="password"
             placeholder="Sua senha"
             onChange={e => setFieldPasswordValue(e.target.value)}
+            value={fieldPasswordValue}
             shape="secondary"
             className="focus-effect"
           />

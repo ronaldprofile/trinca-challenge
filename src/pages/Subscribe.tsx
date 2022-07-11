@@ -1,12 +1,32 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { useUser } from "../context/UserContext";
 import { Header } from "../components/Header";
 import { TrincaLogo } from "../components/TrincaLogo";
 import { ModalSignup } from "../components/ModalSignup";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
+import { toast } from "react-toastify";
 
 export function Subscribe() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const { authenticate } = useUser();
+
+  async function handleAuthenticate(event: FormEvent) {
+    event.preventDefault();
+
+    if (!email.trim() || !password.trim()) {
+      toast.error("Preencha os campos", { theme: "colored" });
+      return;
+    }
+
+    await authenticate(email, password);
+
+    setEmail("");
+    setPassword("");
+  }
 
   function closeModal() {
     setIsOpenModal(false);
@@ -25,7 +45,7 @@ export function Subscribe() {
         flex-col gap-16`}
       >
         <div className="w-full">
-          <form>
+          <form onSubmit={handleAuthenticate}>
             <div className={`mb-9 flex flex-col gap-4`}>
               <label
                 htmlFor="email"
@@ -34,7 +54,13 @@ export function Subscribe() {
                 Login
               </label>
 
-              <Input type="email" id="email" placeholder="Seu E-mail" />
+              <Input
+                type="email"
+                id="email"
+                placeholder="Seu E-mail"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
             </div>
 
             <div className={`flex flex-col gap-4`}>
@@ -45,7 +71,13 @@ export function Subscribe() {
                 Senha
               </label>
 
-              <Input type="password" id="password" placeholder="Sua senha" />
+              <Input
+                type="password"
+                id="password"
+                placeholder="Sua senha"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
             </div>
 
             <Button className="w-full mt-12">entrar</Button>
