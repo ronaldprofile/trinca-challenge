@@ -1,4 +1,4 @@
-import { IUser } from "../types/user";
+import { IUser } from "../types";
 
 export function setUserLocalStorage(user: IUser | null) {
   localStorage.setItem("trinca-user", JSON.stringify(user));
