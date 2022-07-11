@@ -1,12 +1,20 @@
 import { useState } from "react";
+import { SignOut } from "phosphor-react";
+import { useUser } from "../context/UserContext";
+import { ModalAddBarbecue } from "../components/ModalAddBarbecue";
+import { CardBarbecue } from "../components/CardBarbecue";
 import { Header } from "../components/Header";
 import { Button } from "../components/Button";
-import { Card } from "../components/Card";
-import { ModalAddBarbecue } from "../components/ModalAddBarbecue";
-import { SignOut } from "phosphor-react";
+import { IBarbecue } from "../types";
 
 export function Dashboard() {
+  const { user, signOut } = useUser();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [barbecuesList, setBarbecuesList] = useState<IBarbecue[]>([]);
+
+  async function addBarbecue(newBarbecue: IBarbecue) {
+    setBarbecuesList(prevState => [...prevState, newBarbecue]);
+  }
 
   function closeModal() {
     setIsOpenModal(false);
@@ -27,28 +35,48 @@ export function Dashboard() {
               Adicionar Churras
             </Button>
 
-            <Button
-              type="button"
-              shape="secondary"
-              danger
-              className="text-sm flex items-center gap-2"
-            >
-              <SignOut size={24} />
-              sair
-            </Button>
+            {user && (
+              <Button
+                onClick={signOut}
+                shape="secondary"
+                danger
+                className="text-sm flex items-center gap-2"
+              >
+                <SignOut size={24} />
+                sair
+              </Button>
+            )}
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {barbecuesList.length <= 0 ? (
+              <div className="p-5 w-full bg-white shadow-md">
+                <span className="font-normal text-xl">
+                  Nenhum evento adicionado
+                </span>
+              </div>
+            ) : (
+              barbecuesList.map(barbecue => (
+                <CardBarbecue
+                  key={barbecue.id}
+                  id={barbecue.id}
+                  title={barbecue.title}
+                  date={barbecue.date}
+                  amountCollected={barbecue.totalAmountCollected}
+                  totalMembers={barbecue.members.length}
+                />
+              ))
+            )}
           </div>
         </div>
       </main>
 
       {isOpenModal && (
-        <ModalAddBarbecue isOpen={isOpenModal} closeModal={closeModal} />
+        <ModalAddBarbecue
+          isOpen={isOpenModal}
+          closeModal={closeModal}
+          onAddBarbecue={addBarbecue}
+        />
       )}
     </div>
   );
