@@ -1,16 +1,14 @@
-import { IUser } from "../types";
-
-export function setUserLocalStorage(user: IUser | null) {
-  localStorage.setItem("trinca-user", JSON.stringify(user));
+export function setLocalStorage(key: string, initialValue: any) {
+  localStorage.setItem(key, JSON.stringify(initialValue));
 }
 
-export function getUserLocalStorage() {
-  const JSON_DATA = localStorage.getItem("trinca-user");
+export function getLocalStorage<T>(key: string) {
+  const JSON_DATA = localStorage.getItem(key);
 
   if (!JSON_DATA) {
     return null;
   }
 
-  const userStorage = JSON.parse(JSON_DATA);
+  const userStorage = JSON.parse(JSON_DATA) as T;
   return userStorage ?? null;
 }
