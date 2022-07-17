@@ -4,9 +4,7 @@ import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { ItemList } from "../components/List/ItemList";
 import { ModalAddMember } from "../components/ModalAddMember";
-import { ArrowLeft, Users } from "phosphor-react";
-import peopleIcon from "../assets/people.svg";
-import moneyIcon from "../assets/money.svg";
+import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
 
 export function Details() {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -54,11 +52,11 @@ export function Details() {
 
               <div className="flex flex-col gap-4">
                 <span className={`text-xl font-medium flex items-center gap-3`}>
-                  <img src={peopleIcon} alt="people icon" />
+                  <Users size={24} />
                   20
                 </span>
                 <span className={`text-xl font-medium flex items-center gap-3`}>
-                  <img src={moneyIcon} alt="money icon" />
+                  <CurrencyCircleDollar size={24} />
                   R$200
                 </span>
               </div>
