@@ -9,7 +9,7 @@ export interface IBarbecue {
   date: Date;
   informationAdditional?: string;
 
-  members: [];
+  members: IMember[];
   totalAmountCollected: number;
 }
 
