@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import peopleIcon from "../assets/people.svg";
-import moneyIcon from "../assets/money.svg";
+import ptBR from "date-fns/locale/pt-BR";
+import { Users, CurrencyCircleDollar } from 'phosphor-react'
 
 interface CardBarbecueProps {
   id: string;
@@ -15,11 +14,15 @@ interface CardBarbecueProps {
 export function CardBarbecue({
   id,
   title,
-  date,
+  date: dateToBarbecue,
   amountCollected,
-  totalMembers
+  totalMembers,
 }: CardBarbecueProps) {
-  const dateFormatted = format(date, "dd/MM", { locale: ptBR });
+  const dateFormatted = format(dateToBarbecue, "dd/MM", { locale: ptBR });
+
+  const dateToBarbecueFormatted = format(dateToBarbecue, "d 'de' LLLL 'de' y", {
+    locale: ptBR,
+  });
 
   return (
     <Link
@@ -31,17 +34,24 @@ export function CardBarbecue({
       `}
     >
       <div className={`flex flex-col gap-2`}>
-        <span className={`font-bold text-[28px]`}>{dateFormatted}</span>
+        <time
+          dateTime={dateToBarbecue.toISOString()}
+          title={dateToBarbecueFormatted}
+          className={`font-bold text-[28px]`}
+        >
+          {dateFormatted}
+        </time>
         <span className={`font-bold text-xl text-black/80`}>{title}</span>
       </div>
 
       <div className={`mt-12 flex items-center justify-between`}>
         <span className={`text-xl font-medium flex items-center gap-3`}>
-          <img src={peopleIcon} alt="people icon" />
+          <Users size={24} />
           {totalMembers}
         </span>
+        
         <span className={`text-xl font-medium flex items-center gap-3`}>
-          <img src={moneyIcon} alt="money icon" />
+          <CurrencyCircleDollar size={24} />
           {amountCollected}
         </span>
       </div>
