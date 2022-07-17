@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { SignOut } from "phosphor-react";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../context/AuthContext";
+import { useBarbecues } from "../context/BarbecueContext";
 import { ModalAddBarbecue } from "../components/ModalAddBarbecue";
-import { CardBarbecue } from "../components/CardBarbecue";
 import { Header } from "../components/Header";
 import { Button } from "../components/Button";
-import { IBarbecue } from "../types";
+import { CardBarbecue } from "../components/CardBarbecue";
 
 export function Dashboard() {
   const { user, signOut } = useUser();
+  const { barbecues, handleCreateNewBarbecue } = useBarbecues();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [barbecuesList, setBarbecuesList] = useState<IBarbecue[]>([]);
 
-  async function addBarbecue(newBarbecue: IBarbecue) {
-    setBarbecuesList(prevState => [...prevState, newBarbecue]);
-  }
 
   function closeModal() {
     setIsOpenModal(false);
@@ -49,19 +46,19 @@ export function Dashboard() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {barbecuesList.length <= 0 ? (
+            {barbecues?.length <= 0 ? (
               <div className="p-5 w-full bg-white shadow-md">
                 <span className="font-normal text-xl">
                   Nenhum evento adicionado
                 </span>
               </div>
             ) : (
-              barbecuesList.map(barbecue => (
+              barbecues?.map((barbecue) => (
                 <CardBarbecue
                   key={barbecue.id}
                   id={barbecue.id}
                   title={barbecue.title}
-                  date={barbecue.date}
+                  date={new Date(barbecue.date)}
                   amountCollected={barbecue.totalAmountCollected}
                   totalMembers={barbecue.members.length}
                 />
@@ -75,7 +72,7 @@ export function Dashboard() {
         <ModalAddBarbecue
           isOpen={isOpenModal}
           closeModal={closeModal}
-          onAddBarbecue={addBarbecue}
+          onAddBarbecue={handleCreateNewBarbecue}
         />
       )}
     </div>
