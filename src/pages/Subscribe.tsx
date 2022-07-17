@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../context/AuthContext";
 import { Header } from "../components/Header";
 import { TrincaLogo } from "../components/TrincaLogo";
 import { ModalSignup } from "../components/ModalSignup";
@@ -23,9 +23,6 @@ export function Subscribe() {
     }
 
     await authenticate(email, password);
-
-    setEmail("");
-    setPassword("");
   }
 
   function closeModal() {
