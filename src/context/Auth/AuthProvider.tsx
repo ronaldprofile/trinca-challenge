@@ -1,30 +1,15 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-
+import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { IUser } from "../types";
-import { getLocalStorage, setLocalStorage } from "../utils";
+import { IUser } from "../../types";
+import { getLocalStorage, setLocalStorage } from "../../utils";
+import { AuthContext } from "./AuthContext";
 
-interface UserContextProviderProps {
+interface AuthContextProviderProps {
   children: ReactNode;
 }
 
-interface UserContextData {
-  user: IUser | null;
-  signUp: (user: IUser) => Promise<void>;
-  signOut: () => void;
-  authenticate: (email: string, password: string) => Promise<void>;
-}
-
-const UserContext = createContext({} as UserContextData);
-
-export function UserContextProvider({ children }: UserContextProviderProps) {
+export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
 
@@ -65,10 +50,15 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
   }
 
   return (
-    <UserContext.Provider value={{ user, signUp, signOut, authenticate }}>
-      {children}
-    </UserContext.Provider>
+    <AuthContext.Provider
+      value={{
+        user,
+        signUp,
+        signOut,
+        authenticate,
+      }}
+    >
+        {children}
+    </AuthContext.Provider>
   );
 }
-
-export const useUser = () => useContext(UserContext);

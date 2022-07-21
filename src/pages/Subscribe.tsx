@@ -1,8 +1,8 @@
 import { FormEvent, useState } from "react";
-import { useUser } from "../context/AuthContext";
+import { useAuth } from "../context/Auth/AuthContext";
 import { Header } from "../components/Header";
 import { TrincaLogo } from "../components/TrincaLogo";
-import { ModalSignup } from "../components/ModalSignup";
+import { ModalSignUp } from "../components/ModalSignUp";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ export function Subscribe() {
   const [password, setPassword] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const { authenticate } = useUser();
+  const { authenticate } = useAuth();
 
   async function handleAuthenticate(event: FormEvent) {
     event.preventDefault();
@@ -56,7 +56,7 @@ export function Subscribe() {
                 id="email"
                 placeholder="Seu E-mail"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -73,7 +73,7 @@ export function Subscribe() {
                 id="password"
                 placeholder="Sua senha"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -100,7 +100,7 @@ export function Subscribe() {
         </footer>
 
         {isOpenModal && (
-          <ModalSignup isOpen={isOpenModal} closeModal={closeModal} />
+          <ModalSignUp isOpen={isOpenModal} closeModal={closeModal} />
         )}
       </div>
     </div>

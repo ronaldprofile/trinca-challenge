@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { SignOut } from "phosphor-react";
-import { useUser } from "../context/AuthContext";
-import { useBarbecues } from "../context/BarbecueContext";
+import { useAuth } from "../context/Auth/AuthContext";
+import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { ModalAddBarbecue } from "../components/ModalAddBarbecue";
 import { Header } from "../components/Header";
 import { Button } from "../components/Button";
 import { CardBarbecue } from "../components/CardBarbecue";
 
 export function Dashboard() {
-  const { user, signOut } = useUser();
-  const { barbecues, handleCreateNewBarbecue } = useBarbecues();
+  const { user, signOut } = useAuth();
+  const { barbecues } = useBarbecues();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
 
@@ -46,14 +46,14 @@ export function Dashboard() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {barbecues?.length <= 0 ? (
+            {barbecues.length <= 0 ? (
               <div className="p-5 w-full bg-white shadow-md">
                 <span className="font-normal text-xl">
                   Nenhum evento adicionado
                 </span>
               </div>
             ) : (
-              barbecues?.map((barbecue) => (
+              barbecues.map((barbecue) => (
                 <CardBarbecue
                   key={barbecue.id}
                   id={barbecue.id}
@@ -72,7 +72,6 @@ export function Dashboard() {
         <ModalAddBarbecue
           isOpen={isOpenModal}
           closeModal={closeModal}
-          onAddBarbecue={handleCreateNewBarbecue}
         />
       )}
     </div>

@@ -14,8 +14,9 @@ export interface IBarbecue {
 }
 
 export interface IMember {
+  id: string;
   name: string;
-  contribution: string;
+  contribution: number;
   paid: boolean;
   hasDrinkIncluded: boolean;
 }

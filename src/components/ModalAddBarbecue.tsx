@@ -1,23 +1,21 @@
 import { FormEvent, useState } from "react";
 import { Modal, ModalProps, ModalTitle } from "./Modal";
+import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { Button } from "./Button";
 import { Input } from "./Input";
-import { v4 as useId } from "uuid";
 import { toast } from "react-toastify";
-import { IBarbecue } from "../types";
 
-interface ModalAddBarbecueProps extends ModalProps {
-  onAddBarbecue: (barbecueEvent: IBarbecue) => Promise<void>;
-}
+interface ModalAddBarbecueProps extends ModalProps {}
 
 export function ModalAddBarbecue({
   isOpen,
   closeModal,
-  onAddBarbecue
 }: ModalAddBarbecueProps) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [informationAdditional, setInformationAdditional] = useState("");
+
+  const { createNewBarbecue } = useBarbecues();
 
   async function handleAddBarbecue(event: FormEvent) {
     event.preventDefault();
@@ -27,14 +25,13 @@ export function ModalAddBarbecue({
       return;
     }
 
-    await onAddBarbecue({
-      id: useId(),
+    const newBarbecue = {
       title,
       date: new Date(date),
       informationAdditional,
-      members: [],
-      totalAmountCollected: 0
-    });
+    };
+
+    await createNewBarbecue(newBarbecue);
 
     toast.success("Churras adicionado", { theme: "colored" });
 
@@ -61,7 +58,7 @@ export function ModalAddBarbecue({
               <Input
                 type="text"
                 id="name_event"
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
                 value={title}
                 shape="secondary"
                 className="focus-effect"
@@ -78,7 +75,7 @@ export function ModalAddBarbecue({
               <Input
                 type="date"
                 id="date_event"
-                onChange={e => setDate(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
                 value={date}
                 shape="secondary"
                 className="focus-effect"
@@ -95,7 +92,7 @@ export function ModalAddBarbecue({
 
               <textarea
                 id="information"
-                onChange={e => setInformationAdditional(e.target.value)}
+                onChange={(e) => setInformationAdditional(e.target.value)}
                 value={informationAdditional}
                 placeholder="Informações importantes sobre o evento"
                 className="py-3 px-5 min-h-[112px] w-full text-base bg-input resize-none shadow-sm focus:outline-none focus-effect border border-gray-300 rounded transition-all"

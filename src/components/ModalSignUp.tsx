@@ -1,15 +1,15 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useAuth } from "../context/Auth/AuthContext";
 import { Modal, ModalDescription, ModalProps, ModalTitle } from "./Modal";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { toast } from "react-toastify";
 
-interface ModalSignupProps extends ModalProps {}
+interface ModalSignUpProps extends ModalProps {}
 
-export function ModalSignup({ isOpen, closeModal }: ModalSignupProps) {
-  const { signUp } = useUser();
+export function ModalSignUp({ isOpen, closeModal }: ModalSignUpProps) {
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
   const [fieldEmailValue, setFieldEmailValue] = useState("");

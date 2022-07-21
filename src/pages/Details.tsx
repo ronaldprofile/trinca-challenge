@@ -1,13 +1,29 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
-import { ItemList } from "../components/List/ItemList";
+import { MemberItem } from "../components/MemberList/MemberItem";
 import { ModalAddMember } from "../components/ModalAddMember";
 import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
+import { IBarbecue } from "../types";
 
 export function Details() {
+  const { id: currentBarbecueId } = useParams();
+  const [currentBarbecue, setCurrentBarbecue] = useState<IBarbecue>();
   const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const { barbecues } = useBarbecues();
+
+  useEffect(() => {
+    const foundedBarbecue = barbecues.find((barbecue) =>
+      currentBarbecueId === barbecue.id ? barbecue : null
+    );
+
+    if (foundedBarbecue) {
+      setCurrentBarbecue(foundedBarbecue);
+    }
+  }, [currentBarbecueId]);
 
   function closeModal() {
     setIsOpenModal(false);
@@ -46,27 +62,36 @@ export function Details() {
           <div className="bg-white shadow-md p-6">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-2">
-                <span className="text-[28px] font-medium">01/12</span>
-                <strong className="text-4xl">Niver do Gui</strong>
+                <time className="text-[28px] font-medium">01/09</time>
+                <strong className="text-4xl">{currentBarbecue?.title}</strong>
               </div>
 
               <div className="flex flex-col gap-4">
                 <span className={`text-xl font-medium flex items-center gap-3`}>
                   <Users size={24} />
-                  20
+                  {currentBarbecue?.members.length}
                 </span>
                 <span className={`text-xl font-medium flex items-center gap-3`}>
                   <CurrencyCircleDollar size={24} />
-                  R$200
+                  R$ {currentBarbecue?.totalAmountCollected}
                 </span>
               </div>
             </div>
 
             <div className="mt-10">
               <div className="flex flex-col divide-y">
-                <ItemList />
-                <ItemList />
-                <ItemList />
+                {currentBarbecue?.members.map((member) => {
+                  return (
+                    <MemberItem
+                      key={member.id}
+                      memberId={member.id}
+                      barbecueListId={currentBarbecueId}
+                      name={member.name}
+                      contribution={member.contribution}
+                      hasDrinkIncluded={member.hasDrinkIncluded}
+                    />
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -74,7 +99,11 @@ export function Details() {
       </main>
 
       {isOpenModal && (
-        <ModalAddMember isOpen={isOpenModal} closeModal={closeModal} />
+        <ModalAddMember
+          isOpen={isOpenModal}
+          closeModal={closeModal}
+          barbecueListId={currentBarbecueId!}
+        />
       )}
     </div>
   );

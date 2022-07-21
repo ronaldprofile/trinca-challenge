@@ -1,16 +1,50 @@
+import { FormEvent, useState } from "react";
 import { Modal, ModalProps, ModalTitle } from "./Modal";
+import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { Button } from "./Button";
 import { Input } from "./Input";
+import { toast } from "react-toastify";
+interface ModalAddMemberProps extends ModalProps {
+  barbecueListId: string;
+}
 
-interface ModalAddMemberProps extends ModalProps {}
+export function ModalAddMember({
+  isOpen,
+  closeModal,
+  barbecueListId,
+}: ModalAddMemberProps) {
+  const [memberName, setMemberName] = useState("");
+  const [memberContribution, setMemberContribution] = useState(15);
+  const [memberHasDrinkIncluded, setMemberHasDrinkIncluded] = useState("");
 
-export function ModalAddMember({ isOpen, closeModal }: ModalAddMemberProps) {
+  const { addMemberToBarbecue } = useBarbecues();
+
+  async function handleSubmitForm(event: FormEvent) {
+    event.preventDefault();
+
+    if (!memberName.trim() || !memberContribution) {
+      toast.error("Preencha os campos", { theme: "colored" });
+      return;
+    }
+
+    const hasDrinkIncluded = memberHasDrinkIncluded === "on";
+
+    const newMember = {
+      name: memberName,
+      contribution: memberContribution,
+      hasDrinkIncluded,
+    };
+
+    await addMemberToBarbecue(barbecueListId, newMember);
+    closeModal();
+  }
+
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
       <ModalTitle title="Adicionar membro" />
 
       <div className="mt-8">
-        <form>
+        <form onSubmit={handleSubmitForm}>
           <div className="mb-6">
             <label htmlFor="name" className="sr-only">
               Nome do membro
@@ -21,6 +55,8 @@ export function ModalAddMember({ isOpen, closeModal }: ModalAddMemberProps) {
               shape="secondary"
               className="w-full focus-effect"
               placeholder="Nome do membro"
+              value={memberName}
+              onChange={(event) => setMemberName(event.target.value)}
             />
           </div>
 
@@ -35,17 +71,25 @@ export function ModalAddMember({ isOpen, closeModal }: ModalAddMemberProps) {
                 shape="secondary"
                 className="w-full focus-effect"
                 placeholder="Contribuição do membro"
+                min={15}
+                value={memberContribution}
+                onChange={(event) =>
+                  setMemberContribution(Number(event.target.value))
+                }
               />
             </div>
 
-            {/* <div className="flex items-center gap-2">
+            <div className="mt-4 flex items-center gap-2">
               <input
                 type="checkbox"
                 name="include_drinks"
                 id="include_drinks"
+                onChange={(event) =>
+                  setMemberHasDrinkIncluded(event.target.value)
+                }
               />
               <label htmlFor="include_drinks">Incluir bebidas</label>
-            </div> */}
+            </div>
           </div>
 
           <Button className="mt-8 w-full text-base focus-effect focus:ring-black">
