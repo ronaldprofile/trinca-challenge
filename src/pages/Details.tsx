@@ -7,6 +7,7 @@ import { MemberItem } from "../components/MemberList/MemberItem";
 import { ModalAddMember } from "../components/ModalAddMember";
 import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
 import { IBarbecue } from "../types";
+import { formatPrice } from "../utils/formatCurrency";
 
 export function Details() {
   const { id: currentBarbecueId } = useParams();
@@ -26,8 +27,10 @@ export function Details() {
   }, [currentBarbecueId]);
 
   useEffect(() => {
-    calculateContributionMembers(currentBarbecueId!)
-  }, [currentBarbecueId])
+    calculateContributionMembers(currentBarbecueId!);
+  }, [currentBarbecueId]);
+
+
 
   function closeModal() {
     setIsOpenModal(false);
@@ -77,7 +80,7 @@ export function Details() {
                 </span>
                 <span className={`text-xl font-medium flex items-center gap-3`}>
                   <CurrencyCircleDollar size={24} />
-                  R$ {currentBarbecue?.totalAmountCollected}
+                  {formatPrice(currentBarbecue?.totalAmountCollected!)}
                 </span>
               </div>
             </div>

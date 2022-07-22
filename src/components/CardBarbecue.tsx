@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import { Users, CurrencyCircleDollar } from 'phosphor-react'
+import { formatPrice } from "../utils/formatCurrency";
 
 interface CardBarbecueProps {
   id: string;
@@ -52,7 +53,7 @@ export function CardBarbecue({
         
         <span className={`text-xl font-medium flex items-center gap-3`}>
           <CurrencyCircleDollar size={24} />
-          {amountCollected}
+          {formatPrice(amountCollected)}
         </span>
       </div>
     </Link>

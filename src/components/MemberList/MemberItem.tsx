@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBarbecues } from "../../context/Barbecue/BarbecueContext";
 import { Wine } from "phosphor-react";
+import { formatPrice } from "../../utils/formatCurrency";
 
 interface MemberItemProps {
   barbecueListId?: string;
@@ -21,7 +22,12 @@ export function MemberItem({
 }: MemberItemProps) {
   const [memberPaidContribution, setMemberPaidContribution] = useState(paid);
 
-  const { updateMemberPaymentStatus } = useBarbecues();
+  const { updateMemberPaymentStatus, calculateContributionMembers } = useBarbecues();
+
+  useEffect(() => {
+    calculateContributionMembers(barbecueListId!)
+  }, [memberPaidContribution])
+
 
   function totalMemberWillPay(drink: number, contribution: number) {
     if (hasDrinkIncluded) {
@@ -72,7 +78,7 @@ export function MemberItem({
           paid && "line-through"
         }`}
       >
-        R$ {total}
+        {formatPrice(total)}
       </span>
     </div>
   );
