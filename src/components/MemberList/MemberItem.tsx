@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useBarbecues } from "../../context/Barbecue/BarbecueContext";
 import { Wine } from "phosphor-react";
 
 interface MemberItemProps {
@@ -7,22 +8,20 @@ interface MemberItemProps {
   name: string;
   contribution: number;
   hasDrinkIncluded: boolean;
+  paid: boolean;
 }
 
 export function MemberItem({
+  memberId,
+  barbecueListId,
   name,
   contribution,
   hasDrinkIncluded,
+  paid,
 }: MemberItemProps) {
-  const [memberPaidContribution, setMemberPaidContribution] = useState("");
-  const memberHasAlreadyPaid = memberPaidContribution === "on";
+  const [memberPaidContribution, setMemberPaidContribution] = useState(paid);
 
-  if (memberHasAlreadyPaid) {
-    // atualizar amount do barbecue
-    console.log("pagou a contribuição");
-  } else {
-    console.log("não pagou a contribuição");
-  }
+  const { updateMemberPaymentStatus } = useBarbecues();
 
   function totalMemberWillPay(drink: number, contribution: number) {
     if (hasDrinkIncluded) {
@@ -43,10 +42,21 @@ export function MemberItem({
           type="checkbox"
           name="member_paid_contribution"
           id="member_paid_contribution"
-          onChange={(event) => setMemberPaidContribution(event.target.value)}
+          checked={memberPaidContribution}
+          onChange={(event) => {
+            updateMemberPaymentStatus(memberId, barbecueListId!);
+            setMemberPaidContribution(event.target.checked)
+          }}
         />
 
-        <span className="text-xl font-medium text-black/80">{name}</span>
+        <span
+          className={`text-xl font-medium text-black/80 ${
+            paid && "line-through"
+          }`}
+        >
+          {name}
+        </span>
+
         {hasDrinkIncluded && (
           <span
             className="text-black cursor-pointer"
@@ -57,7 +67,13 @@ export function MemberItem({
         )}
       </div>
 
-      <span className="text-xl font-medium text-black/80">R$ {total}</span>
+      <span
+        className={`text-xl font-medium text-black/80 ${
+          paid && "line-through"
+        }`}
+      >
+        R$ {total}
+      </span>
     </div>
   );
 }
