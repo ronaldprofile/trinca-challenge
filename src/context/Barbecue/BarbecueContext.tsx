@@ -17,6 +17,8 @@ export interface CreateNewMemberToBarbecue {
 interface BarbecueContextType {
   barbecues: IBarbecue[];
   createNewBarbecue: (newBarbecue: CreateNewBarbecueData) => Promise<void>;
+  updateMemberPaymentStatus: (memberId: string, barbecueListId: string) => void;
+  calculateContributionMembers: (barbecueListId: string) => void;
   addMemberToBarbecue: (
     barbecueListId: string,
     newMember: CreateNewMemberToBarbecue

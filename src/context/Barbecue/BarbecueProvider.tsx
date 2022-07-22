@@ -2,6 +2,8 @@ import { ReactNode, useEffect, useReducer } from "react";
 import {
   addNewBarbecueAction,
   addNewMemberToBarbecueAction,
+  calculateContributionMembersAction,
+  updateMemberPaymentStatusAction,
 } from "../../reducers/barbecue/actions";
 
 import { barbecuesReducer } from "../../reducers/barbecue/reducer";
@@ -88,12 +90,23 @@ export function BarbecueContextProvider({
     dispatch(addNewMemberToBarbecueAction(newMember, barbecueListId));
   }
 
+  function updateMemberPaymentStatus(memberId: string, barbecueListId: string) {
+    dispatch(updateMemberPaymentStatusAction(memberId, barbecueListId))
+  }
+
+
+  function calculateContributionMembers(barbecueListId: string) {
+    dispatch(calculateContributionMembersAction(barbecueListId))
+  }
+
   return (
     <BarbecueContext.Provider
       value={{
         barbecues,
         createNewBarbecue,
         addMemberToBarbecue,
+        updateMemberPaymentStatus,
+        calculateContributionMembers
       }}
     >
       {children}
