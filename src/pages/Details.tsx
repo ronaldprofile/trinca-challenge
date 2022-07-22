@@ -13,7 +13,7 @@ export function Details() {
   const [currentBarbecue, setCurrentBarbecue] = useState<IBarbecue>();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const { barbecues } = useBarbecues();
+  const { barbecues, calculateContributionMembers } = useBarbecues();
 
   useEffect(() => {
     const foundedBarbecue = barbecues.find((barbecue) =>
@@ -24,6 +24,10 @@ export function Details() {
       setCurrentBarbecue(foundedBarbecue);
     }
   }, [currentBarbecueId]);
+
+  useEffect(() => {
+    calculateContributionMembers(currentBarbecueId!)
+  }, [currentBarbecueId])
 
   function closeModal() {
     setIsOpenModal(false);
@@ -89,6 +93,7 @@ export function Details() {
                       name={member.name}
                       contribution={member.contribution}
                       hasDrinkIncluded={member.hasDrinkIncluded}
+                      paid={member.paid}
                     />
                   );
                 })}
