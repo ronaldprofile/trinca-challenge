@@ -6,30 +6,21 @@ import { Header } from "../components/Header";
 import { MemberItem } from "../components/MemberList/MemberItem";
 import { ModalAddMember } from "../components/ModalAddMember";
 import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
-import { IBarbecue } from "../types";
 import { formatPrice } from "../utils/formatCurrency";
 
 export function Details() {
   const { id: currentBarbecueId } = useParams();
-  const [currentBarbecue, setCurrentBarbecue] = useState<IBarbecue>();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const { barbecues, calculateContributionMembers } = useBarbecues();
 
-  useEffect(() => {
-    const foundedBarbecue = barbecues.find((barbecue) =>
-      currentBarbecueId === barbecue.id ? barbecue : null
-    );
-
-    if (foundedBarbecue) {
-      setCurrentBarbecue(foundedBarbecue);
-    }
-  }, [currentBarbecueId]);
+  const currentBarbecue = barbecues.find((barbecue) =>
+      barbecue.id === currentBarbecueId ? barbecue : null
+  );
 
   useEffect(() => {
     calculateContributionMembers(currentBarbecueId!);
   }, [currentBarbecueId]);
-
 
 
   function closeModal() {
@@ -87,19 +78,23 @@ export function Details() {
 
             <div className="mt-10">
               <div className="flex flex-col divide-y">
-                {currentBarbecue?.members.map((member) => {
-                  return (
-                    <MemberItem
-                      key={member.id}
-                      memberId={member.id}
-                      barbecueListId={currentBarbecueId}
-                      name={member.name}
-                      contribution={member.contribution}
-                      hasDrinkIncluded={member.hasDrinkIncluded}
-                      paid={member.paid}
-                    />
-                  );
-                })}
+                {currentBarbecue!.members.length <= 0 ? (
+                  <span>nenhum item</span>
+                ) : (
+                  currentBarbecue?.members.map((member) => {
+                    return (
+                      <MemberItem
+                        key={member.id}
+                        memberId={member.id}
+                        barbecueListId={currentBarbecueId}
+                        name={member.name}
+                        contribution={member.contribution}
+                        hasDrinkIncluded={member.hasDrinkIncluded}
+                        paid={member.paid}
+                      />
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>

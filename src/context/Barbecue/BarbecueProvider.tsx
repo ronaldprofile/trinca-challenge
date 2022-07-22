@@ -91,12 +91,11 @@ export function BarbecueContextProvider({
   }
 
   function updateMemberPaymentStatus(memberId: string, barbecueListId: string) {
-    dispatch(updateMemberPaymentStatusAction(memberId, barbecueListId))
+    dispatch(updateMemberPaymentStatusAction(memberId, barbecueListId));
   }
 
-
   function calculateContributionMembers(barbecueListId: string) {
-    dispatch(calculateContributionMembersAction(barbecueListId))
+    dispatch(calculateContributionMembersAction(barbecueListId));
   }
 
   return (
@@ -106,7 +105,7 @@ export function BarbecueContextProvider({
         createNewBarbecue,
         addMemberToBarbecue,
         updateMemberPaymentStatus,
-        calculateContributionMembers
+        calculateContributionMembers,
       }}
     >
       {children}
