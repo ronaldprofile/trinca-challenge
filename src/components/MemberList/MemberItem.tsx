@@ -42,7 +42,7 @@ export function MemberItem({
   const total = totalMemberWillPay(20, contribution);
 
   return (
-    <div className="py-[10px] flex items-center justify-between">
+    <div className="py-[10px] flex sm:flex-row sm:items-center justify-between">
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
@@ -56,7 +56,7 @@ export function MemberItem({
         />
 
         <span
-          className={`text-xl font-medium text-black/80 ${
+          className={`text-base sm:text-xl font-medium text-black/80 ${
             paid && "line-through"
           }`}
         >
@@ -65,16 +65,16 @@ export function MemberItem({
 
         {hasDrinkIncluded && (
           <span
-            className="text-black cursor-pointer"
+            className="text-base sm:text-2xl text-black cursor-pointer"
             title={`Bebida inclusa, R$ 20,00  `}
           >
-            <Wine size={24} weight="fill" />
+            <Wine  weight="fill" />
           </span>
         )}
       </div>
 
       <span
-        className={`text-xl font-medium text-black/80 ${
+        className={`text-base sm:text-xl font-medium text-black/80 ${
           paid && "line-through"
         }`}
       >

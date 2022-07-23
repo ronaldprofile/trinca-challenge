@@ -38,7 +38,7 @@ export function CardBarbecue({
         <time
           dateTime={dateToBarbecue.toISOString()}
           title={dateToBarbecueFormatted}
-          className={`font-bold text-[28px]`}
+          className={`font-bold text-base sm:text-[28px]`}
         >
           {dateFormatted}
         </time>
@@ -46,12 +46,12 @@ export function CardBarbecue({
       </div>
 
       <div className={`mt-12 flex items-center justify-between`}>
-        <span className={`text-xl font-medium flex items-center gap-3`}>
+        <span className={`text-sm sm:text-xl font-medium flex items-center gap-3`}>
           <Users size={24} />
           {totalMembers}
         </span>
         
-        <span className={`text-xl font-medium flex items-center gap-3`}>
+        <span className={`text-base sm:text-xl font-medium flex items-center gap-3`}>
           <CurrencyCircleDollar size={24} />
           {formatPrice(amountCollected)}
         </span>

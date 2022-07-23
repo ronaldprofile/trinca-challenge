@@ -36,20 +36,16 @@ export function Details() {
 
       <main className={`-mt-28`}>
         <div className={`px-6`}>
-          <div className="mb-6 flex items-center justify-between">
-            <Link to="/dashboard">
-              <Button
-                className="flex items-center gap-2 text-xs md:text-sm"
-                shape="secondary"
-              >
-                <ArrowLeft size={24} />
+          <div className="mb-6 flex flex-col gap-2 sm:justify-between sm:flex-row">
+            <Link to="/dashboard" title="Voltar para o inicio" className="h-[50px] px-5 transparent text-black hover:bg-black hover:text-white border border-black transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase rounded md:text-sm">
+             <ArrowLeft size={24} />
                 Voltar
-              </Button>
             </Link>
 
             <Button
               onClick={openModal}
-              className="flex items-center gap-2 text-xs md:text-sm focus-effect focus:ring-black"
+              className="flex items-center justify-center gap-2 text-xs md:text-sm focus-effect focus:ring-black"
+              title="Adicionar membro"
             >
               <Users size={24} />
               Adicionar membro
@@ -59,8 +55,8 @@ export function Details() {
           <div className="bg-white shadow-md p-6">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-2">
-                <time className="text-[28px] font-medium">01/09</time>
-                <strong className="text-4xl">{currentBarbecue?.title}</strong>
+                <time className="text-base sm:text-[28px] font-medium">01/09</time>
+                <strong className="text-base sm:text-4xl">{currentBarbecue?.title}</strong>
 
                 {currentBarbecue?.informationAdditional && (
                   <span>{currentBarbecue.informationAdditional}</span>
@@ -68,11 +64,11 @@ export function Details() {
               </div>
 
               <div className="flex flex-col gap-4">
-                <span className={`text-xl font-medium flex items-center gap-3`}>
+                <span className={`text-base sm:text-xl font-medium flex items-center gap-3`}>
                   <Users size={24} />
                   {currentBarbecue?.members.length}
                 </span>
-                <span className={`text-xl font-medium flex items-center gap-3`}>
+                <span className={`text-base sm:text-xl font-medium flex items-center gap-3`}>
                   <CurrencyCircleDollar size={24} />
                   {formatPrice(currentBarbecue?.totalAmountCollected!)}
                 </span>
