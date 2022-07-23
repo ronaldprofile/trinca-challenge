@@ -94,7 +94,7 @@ export function ModalAddBarbecue({
                 id="information"
                 onChange={(e) => setInformationAdditional(e.target.value)}
                 value={informationAdditional}
-                placeholder="Informações importantes sobre o evento"
+                placeholder="Informações importantes sobre o evento (opcional)"
                 className="py-3 px-5 min-h-[112px] w-full text-base bg-input resize-none shadow-sm focus:outline-none focus-effect border border-gray-300 rounded transition-all"
               />
             </div>

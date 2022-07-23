@@ -15,13 +15,12 @@ export function Details() {
   const { barbecues, calculateContributionMembers } = useBarbecues();
 
   const currentBarbecue = barbecues.find((barbecue) =>
-      barbecue.id === currentBarbecueId ? barbecue : null
+    barbecue.id === currentBarbecueId ? barbecue : null
   );
 
   useEffect(() => {
     calculateContributionMembers(currentBarbecueId!);
   }, [currentBarbecueId]);
-
 
   function closeModal() {
     setIsOpenModal(false);
@@ -40,7 +39,7 @@ export function Details() {
           <div className="mb-6 flex items-center justify-between">
             <Link to="/dashboard">
               <Button
-                className="flex items-center gap-2 text-sm"
+                className="flex items-center gap-2 text-xs md:text-sm"
                 shape="secondary"
               >
                 <ArrowLeft size={24} />
@@ -50,7 +49,7 @@ export function Details() {
 
             <Button
               onClick={openModal}
-              className="flex items-center gap-2 text-sm focus-effect focus:ring-black"
+              className="flex items-center gap-2 text-xs md:text-sm focus-effect focus:ring-black"
             >
               <Users size={24} />
               Adicionar membro
@@ -62,6 +61,10 @@ export function Details() {
               <div className="flex flex-col gap-2">
                 <time className="text-[28px] font-medium">01/09</time>
                 <strong className="text-4xl">{currentBarbecue?.title}</strong>
+
+                {currentBarbecue?.informationAdditional && (
+                  <span>{currentBarbecue.informationAdditional}</span>
+                )}
               </div>
 
               <div className="flex flex-col gap-4">

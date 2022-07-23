@@ -28,7 +28,7 @@ export function Dashboard() {
       <main className={`-mt-28`}>
         <div className={`px-6`}>
           <div className="mb-6 flex items-center justify-end gap-3">
-            <Button onClick={openModal} className="text-sm text-white bg-black">
+            <Button onClick={openModal} className="text-xs md:text-sm text-white bg-black">
               Adicionar Churras
             </Button>
 
@@ -37,15 +37,15 @@ export function Dashboard() {
                 onClick={signOut}
                 shape="secondary"
                 danger
-                className="text-sm flex items-center gap-2"
+                className="text-xs md:text-sm flex items-center gap-2"
               >
-                <SignOut size={24} />
+                <SignOut size={24} className="text-xs md:text-2xl" />
                 sair
               </Button>
             )}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {barbecues.length <= 0 ? (
               <div className="p-5 w-full bg-white shadow-md">
                 <span className="font-normal text-xl">

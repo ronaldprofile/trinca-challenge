@@ -15,7 +15,7 @@ export function ModalAddMember({
 }: ModalAddMemberProps) {
   const [memberName, setMemberName] = useState("");
   const [memberContribution, setMemberContribution] = useState(15);
-  const [memberHasDrinkIncluded, setMemberHasDrinkIncluded] = useState("");
+  const [memberHasDrinkIncluded, setMemberHasDrinkIncluded] = useState(false);
 
   const { addMemberToBarbecue } = useBarbecues();
 
@@ -27,15 +27,14 @@ export function ModalAddMember({
       return;
     }
 
-    const hasDrinkIncluded = memberHasDrinkIncluded === "on";
-
     const newMember = {
       name: memberName,
       contribution: memberContribution,
-      hasDrinkIncluded,
+      hasDrinkIncluded: memberHasDrinkIncluded,
     };
 
     await addMemberToBarbecue(barbecueListId, newMember);
+    toast.success("Membro adicionado", { theme: "colored" });
     closeModal();
   }
 
@@ -85,10 +84,10 @@ export function ModalAddMember({
                 name="include_drinks"
                 id="include_drinks"
                 onChange={(event) =>
-                  setMemberHasDrinkIncluded(event.target.value)
+                  setMemberHasDrinkIncluded(event.target.checked)
                 }
               />
-              <label htmlFor="include_drinks">Incluir bebidas</label>
+              <label htmlFor="include_drinks" title="Acréscimo de R$ 20,00">Incluir bebidas</label>
             </div>
           </div>
 
