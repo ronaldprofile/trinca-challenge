@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
-import ptBR from "date-fns/locale/pt-BR";
 import { Users, CurrencyCircleDollar } from 'phosphor-react'
 import { formatPrice } from "../utils/formatCurrency";
+import { formatDate } from "../utils/formatDate";
 
 interface CardBarbecueProps {
   id: string;
@@ -19,10 +18,12 @@ export function CardBarbecue({
   amountCollected,
   totalMembers,
 }: CardBarbecueProps) {
-  const dateFormatted = format(dateToBarbecue, "dd/MM", { locale: ptBR });
+  const dateFormatted = formatDate(dateToBarbecue, {
+    day: '2-digit', month: '2-digit'
+  });
 
-  const dateToBarbecueFormatted = format(dateToBarbecue, "d 'de' LLLL 'de' y", {
-    locale: ptBR,
+  const dateToBarbecueFormattedFull = formatDate(dateToBarbecue, {
+    day: 'numeric', month: 'numeric', year: 'numeric'
   });
 
   return (
@@ -37,7 +38,7 @@ export function CardBarbecue({
       <div className={`flex flex-col gap-2`}>
         <time
           dateTime={dateToBarbecue.toISOString()}
-          title={dateToBarbecueFormatted}
+          title={dateToBarbecueFormattedFull}
           className={`font-bold text-base sm:text-[28px]`}
         >
           {dateFormatted}

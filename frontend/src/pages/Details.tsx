@@ -7,6 +7,7 @@ import { MemberItem } from "../components/MemberList/MemberItem";
 import { ModalAddMember } from "../components/ModalAddMember";
 import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
 import { formatPrice } from "../utils/formatCurrency";
+import { formatDate } from "../utils/formatDate";
 
 export function Details() {
   const { id: currentBarbecueId } = useParams();
@@ -17,6 +18,10 @@ export function Details() {
   const currentBarbecue = barbecues.find((barbecue) =>
     barbecue.id === currentBarbecueId ? barbecue : null
   );
+
+  const formattedDate = formatDate(new Date(currentBarbecue!.date), {
+    day: '2-digit', month: '2-digit'
+  })
 
   useEffect(() => {
     calculateContributionMembers(currentBarbecueId!);
@@ -38,8 +43,8 @@ export function Details() {
         <div className={`px-6`}>
           <div className="mb-6 flex flex-col gap-2 sm:justify-between sm:flex-row">
             <Link to="/dashboard" title="Voltar para o inicio" className="h-[50px] px-5 transparent text-black hover:bg-black hover:text-white border border-black transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase rounded md:text-sm">
-             <ArrowLeft size={24} />
-                Voltar
+              <ArrowLeft size={24} />
+              Voltar
             </Link>
 
             <Button
@@ -55,7 +60,7 @@ export function Details() {
           <div className="bg-white shadow-md p-6">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-2">
-                <time className="text-base sm:text-[28px] font-medium">01/09</time>
+                <time className="text-base sm:text-[28px] font-medium">{formattedDate}</time>
                 <strong className="text-base sm:text-4xl">{currentBarbecue?.title}</strong>
 
                 {currentBarbecue?.informationAdditional && (
@@ -78,7 +83,7 @@ export function Details() {
             <div className="mt-10">
               <div className="flex flex-col divide-y">
                 {currentBarbecue!.members.length <= 0 ? (
-                  <span>nenhum item</span>
+                  <span>nenhum membro por aqui</span>
                 ) : (
                   currentBarbecue?.members.map((member) => {
                     return (

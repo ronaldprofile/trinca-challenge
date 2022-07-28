@@ -6,7 +6,7 @@ export interface IUser {
 export interface IBarbecue {
   id: string;
   title: string;
-  date: Date;
+  date: Date | string;
   informationAdditional?: string;
 
   members: IMember[];
