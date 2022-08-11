@@ -2,6 +2,8 @@
 
 ## Project
 
+https://user-images.githubusercontent.com/81709922/184193585-2a07ff9e-6c80-44e6-a408-0479128fe585.mp4
+
 Technical challenge Frontend. Create a solution to manage random encounters, which involves a conversation circle and barbecues.
 
 ## Techs
