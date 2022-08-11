@@ -18,5 +18,5 @@ export interface IMember {
   name: string;
   contribution: number;
   paid: boolean;
-  hasDrinkIncluded: boolean;
+  hasDrinkIncluded: boolean | 'indeterminate';
 }

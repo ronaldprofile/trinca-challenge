@@ -9,7 +9,7 @@ interface MemberItemProps {
   memberId: string;
   name: string;
   contribution: number;
-  hasDrinkIncluded: boolean;
+  hasDrinkIncluded: boolean | 'indeterminate';
   paid: boolean;
 }
 

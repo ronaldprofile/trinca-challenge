@@ -26,7 +26,7 @@ interface CreateNewBarbecueData {
 export interface CreateNewMemberToBarbecue {
   name: string;
   contribution: number;
-  hasDrinkIncluded: boolean;
+  hasDrinkIncluded: boolean | 'indeterminate';
 }
 
 export function BarbecueContextProvider({
