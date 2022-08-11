@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useBarbecues } from "../../context/Barbecue/BarbecueContext";
-import { Wine } from "phosphor-react";
+import { Wine, Check as CheckIcon } from "phosphor-react";
 import { formatPrice } from "../../utils/formatCurrency";
+import { Checkbox, CheckboxIndicator } from "../Checkbox";
 
 interface MemberItemProps {
   barbecueListId?: string;
@@ -20,14 +21,16 @@ export function MemberItem({
   hasDrinkIncluded,
   paid,
 }: MemberItemProps) {
-  const [memberPaidContribution, setMemberPaidContribution] = useState(paid);
+  const [memberPaidContribution, setMemberPaidContribution] = useState<
+    boolean | "indeterminate"
+  >(paid);
 
-  const { updateMemberPaymentStatus, calculateContributionMembers } = useBarbecues();
+  const { updateMemberPaymentStatus, calculateContributionMembers } =
+    useBarbecues();
 
   useEffect(() => {
-    calculateContributionMembers(barbecueListId!)
-  }, [memberPaidContribution])
-
+    calculateContributionMembers(barbecueListId!);
+  }, [memberPaidContribution]);
 
   function totalMemberWillPay(drink: number, contribution: number) {
     if (hasDrinkIncluded) {
@@ -44,19 +47,26 @@ export function MemberItem({
   return (
     <div className="py-[10px] flex sm:flex-row sm:items-center justify-between">
       <div className="flex items-center gap-3">
-        <input
-          type="checkbox"
+        <Checkbox
+          className="transition-colors"
+          title={`${
+            memberPaidContribution
+              ? "pagamento concluído"
+              : "pagamento não concluído"
+          }`}
           name="member_paid_contribution"
           id="member_paid_contribution"
           checked={memberPaidContribution}
-          onChange={(event) => {
-            updateMemberPaymentStatus(memberId, barbecueListId!);
-            setMemberPaidContribution(event.target.checked)
-          }}
-        />
+          onCheckedChange={setMemberPaidContribution}
+          onClick={() => updateMemberPaymentStatus(memberId, barbecueListId!)}
+        >
+          <CheckboxIndicator>
+            <CheckIcon />
+          </CheckboxIndicator>
+        </Checkbox>
 
         <span
-          className={`text-base sm:text-xl font-medium text-black/80 ${
+          className={`text-base sm:text-xl font-medium text-black/80 transition-all ${
             paid && "line-through"
           }`}
         >
@@ -68,13 +78,13 @@ export function MemberItem({
             className="text-base sm:text-2xl text-black cursor-pointer"
             title={`Bebida inclusa, R$ 20,00  `}
           >
-            <Wine  weight="fill" />
+            <Wine weight="fill" />
           </span>
         )}
       </div>
 
       <span
-        className={`text-base sm:text-xl font-medium text-black/80 ${
+        className={`text-base sm:text-xl font-medium text-black/80 transition-all ${
           paid && "line-through"
         }`}
       >

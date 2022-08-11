@@ -4,6 +4,8 @@ import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { toast } from "react-toastify";
+import { Checkbox, CheckboxIndicator } from "./Checkbox";
+import { Check } from "phosphor-react";
 interface ModalAddMemberProps extends ModalProps {
   barbecueListId: string;
 }
@@ -15,7 +17,7 @@ export function ModalAddMember({
 }: ModalAddMemberProps) {
   const [memberName, setMemberName] = useState("");
   const [memberContribution, setMemberContribution] = useState(15);
-  const [memberHasDrinkIncluded, setMemberHasDrinkIncluded] = useState(false);
+  const [memberHasDrinkIncluded, setMemberHasDrinkIncluded] = useState<boolean | 'indeterminate'>(false);
 
   const { addMemberToBarbecue } = useBarbecues();
 
@@ -79,14 +81,13 @@ export function ModalAddMember({
             </div>
 
             <div className="mt-4 flex items-center gap-2">
-              <input
-                type="checkbox"
-                name="include_drinks"
-                id="include_drinks"
-                onChange={(event) =>
-                  setMemberHasDrinkIncluded(event.target.checked)
-                }
-              />
+              <Checkbox checked={memberHasDrinkIncluded} onCheckedChange={setMemberHasDrinkIncluded} name="include_drinks">
+                <CheckboxIndicator>
+                  <Check />
+                </CheckboxIndicator>
+              </Checkbox>
+
+
               <label htmlFor="include_drinks" title="Acréscimo de R$ 20,00">Incluir bebidas</label>
             </div>
           </div>

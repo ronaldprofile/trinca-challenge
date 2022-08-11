@@ -69,11 +69,11 @@ export function Details() {
               </div>
 
               <div className="flex flex-col gap-4">
-                <span className={`text-base sm:text-xl font-medium flex items-center gap-3`}>
+                <span className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}>
                   <Users size={24} />
                   {currentBarbecue?.members.length}
                 </span>
-                <span className={`text-base sm:text-xl font-medium flex items-center gap-3`}>
+                <span className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}>
                   <CurrencyCircleDollar size={24} />
                   {formatPrice(currentBarbecue?.totalAmountCollected!)}
                 </span>
