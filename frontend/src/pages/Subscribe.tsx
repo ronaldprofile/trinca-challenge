@@ -12,7 +12,7 @@ export function Subscribe() {
   const [password, setPassword] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const { authenticate } = useAuth();
+  const { authenticateWithEmailAndPassword } = useAuth();
 
   async function handleAuthenticate(event: FormEvent) {
     event.preventDefault();
@@ -22,7 +22,10 @@ export function Subscribe() {
       return;
     }
 
-    await authenticate(email, password);
+    await authenticateWithEmailAndPassword({
+      email,
+      password,
+    });
   }
 
   function closeModal() {

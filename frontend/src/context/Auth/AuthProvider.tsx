@@ -1,9 +1,11 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { IUser } from "../../types";
 import { getLocalStorage, setLocalStorage } from "../../utils";
-import { AuthContext } from "./AuthContext";
+import { AuthContext, UserCredentials } from "./AuthContext";
+import { getUser } from "../../hooks/user/get-user";
+import { api } from "../../services/api";
+import { toast } from "react-toastify";
 
 interface AuthContextProviderProps {
   children: ReactNode;
@@ -13,41 +15,63 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userStorage = getLocalStorage<IUser>("trinca-user");
+  async function signUp(data: IUser) {
+    const { email, password } = data;
 
-    if (userStorage) {
-      setUser(userStorage);
+    try {
+      const response = await api.post("/signup", {
+        email,
+        password,
+      });
+
+      const user = response.data;
+
+      setLocalStorage("@trinca-user$id", user.id);
+      setUser(user);
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
-
-  async function signUp(userData: IUser | null) {
-    setLocalStorage("trinca-user", userData);
-    setUser(userData);
   }
 
   function signOut() {
+    localStorage.removeItem("@trinca-user$id");
     setUser(null);
 
     navigate("/");
   }
 
-  async function authenticate(email: string, password: string) {
-    const user = getLocalStorage("trinca-user") as IUser;
+  async function authenticateWithEmailAndPassword(
+    credentials: UserCredentials
+  ) {
+    try {
+      const response = await api.post("/signin", credentials);
+      const user = response.data;
 
-    if (!user) {
-      toast.error("Usuário não encontrado", { theme: "colored" });
-    }
-
-    if (user.email === email && user.password === password) {
-      setUser({ email, password });
-      setLocalStorage("trinca-user", { email, password });
-
-      navigate("/dashboard");
-    } else {
+      if (
+        user.email === credentials.email &&
+        user.password === credentials.password
+      ) {
+        setUser(user);
+        setLocalStorage("@trinca-user$id", user.id);
+        navigate("/dashboard");
+      }
+    } catch (error) {
       toast.error("Login ou senha inválidos", { theme: "colored" });
+      console.log(error);
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      const userId = getLocalStorage<string>("@trinca-user$id");
+
+      if (userId) {
+        const user = await getUser(userId);
+
+        setUser(user);
+      }
+    })();
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -55,10 +79,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         user,
         signUp,
         signOut,
-        authenticate,
+        authenticateWithEmailAndPassword,
       }}
     >
-        {children}
+      {children}
     </AuthContext.Provider>
   );
 }
