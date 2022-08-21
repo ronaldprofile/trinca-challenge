@@ -12,5 +12,33 @@ model User {
   email    String
   password String
 
+  barbecues  Barbecue[]
+  created_at DateTime   @default(now())
+
   @@map("users")
+}
+
+model Barbecue {
+  id               String   @id @default(uuid())
+  title            String
+  description      String?
+  members          Member[]
+  amount_collected Int
+
+  user       User?    @relation(fields: [barbecueId], references: [id])
+  barbecueId String?
+  created_at DateTime @default(now())
+
+  @@map("barbecues")
+}
+
+model Member {
+  id               String    @id @default(uuid())
+  name             String
+  contribution     Int
+  paid             Boolean
+  hasDrinkIncluded Boolean?
+  barbecue         Barbecue? @relation(fields: [memberId], references: [id])
+  memberId         String?
+  created_at       DateTime  @default(now())
 }
