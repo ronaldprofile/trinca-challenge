@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { LoginUserService } from "../services/LoginUserService";
+import { compare } from "bcrypt";
+import { prismaClient } from "../prisma/prismaClient";
+import { LoginUserService } from "../services/user/LoginUserService";
 
 interface UserCredentials {
   password: string;
@@ -8,11 +10,10 @@ interface UserCredentials {
 
 export class LoginUserController {
   async handle(request: Request, response: Response) {
-    const credentials: UserCredentials = request.body;
-
-    const { email, password } = credentials;
+    const { email, password } = request.body;
 
     const service = new LoginUserService();
+
     const user = await service.login({
       email,
       password,
