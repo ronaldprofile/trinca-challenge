@@ -26,9 +26,24 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
       const user = response.data;
 
+      const subscribeAfterTheeSeconds = new Promise((resolve) =>
+        setTimeout(() => resolve(""), 3000)
+      );
+
+      await toast.promise(
+        subscribeAfterTheeSeconds,
+        {
+          pending: "Criando conta...",
+          success: "Woow, deu tudo certo",
+        },
+        { theme: "colored" }
+      );
+
       setLocalStorage("@trinca-user$id", user.id);
       setUser(user);
-    } catch (error) {
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast.error(error.response.data.message, { theme: "colored" });
       console.log(error);
     }
   }
@@ -40,17 +55,19 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     navigate("/");
   }
 
-  async function authenticateWithEmailAndPassword(
-    credentials: UserCredentials
-  ) {
+  async function authenticateWithEmailAndPassword({
+    email,
+    password,
+  }: UserCredentials) {
     try {
-      const response = await api.post("/signin", credentials);
+      const response = await api.post("/signin", {
+        email,
+        password,
+      });
+
       const user = response.data;
 
-      if (
-        user.email === credentials.email &&
-        user.password === credentials.password
-      ) {
+      if (user) {
         setUser(user);
         setLocalStorage("@trinca-user$id", user.id);
         navigate("/dashboard");

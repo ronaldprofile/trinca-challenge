@@ -1,9 +1,10 @@
 import { FormEvent, useState } from "react";
 import { useAuth } from "../context/Auth/AuthContext";
-import { Header } from "../components/Header";
-import { TrincaLogo } from "../components/TrincaLogo";
 import { ModalSignUp } from "../components/ModalSignUp";
+import { TrincaLogo } from "../components/TrincaLogo";
+import { Loading } from "../components/Loading";
 import { Button } from "../components/Button";
+import { Header } from "../components/Header";
 import { Input } from "../components/Input";
 import { toast } from "react-toastify";
 
@@ -11,6 +12,7 @@ export function Subscribe() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { authenticateWithEmailAndPassword } = useAuth();
 
@@ -22,10 +24,18 @@ export function Subscribe() {
       return;
     }
 
-    await authenticateWithEmailAndPassword({
-      email,
-      password,
+    const authenticateAfterThreeSeconds = new Promise((resolve) => {
+      setIsLoading(true);
+      setTimeout(async () => {
+
+        await authenticateWithEmailAndPassword({ email, password });
+
+        setIsLoading(false);
+        resolve("");
+      }, 3000);
     });
+
+    await authenticateAfterThreeSeconds;
   }
 
   function closeModal() {
@@ -105,6 +115,8 @@ export function Subscribe() {
         {isOpenModal && (
           <ModalSignUp isOpen={isOpenModal} closeModal={closeModal} />
         )}
+
+        {isLoading && <Loading />}
       </div>
     </div>
   );

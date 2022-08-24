@@ -1,5 +1,4 @@
 import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Auth/AuthContext";
 
 import { Modal, ModalDescription, ModalProps, ModalTitle } from "./Modal";
@@ -11,40 +10,22 @@ interface ModalSignUpProps extends ModalProps {}
 
 export function ModalSignUp({ isOpen, closeModal }: ModalSignUpProps) {
   const { signUp } = useAuth();
-  const navigate = useNavigate();
-
-  const [fieldEmailValue, setFieldEmailValue] = useState("");
-  const [fieldPasswordValue, setFieldPasswordValue] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   async function handleSubscribe(event: FormEvent) {
     event.preventDefault();
 
-    if (!fieldEmailValue.trim() || !fieldPasswordValue.trim()) {
+    if (!email.trim() || !password.trim()) {
       toast.error("Preencha os campos", { theme: "colored" });
       return;
     }
 
-    const subscribeUserAfterTheeSeconds = new Promise(resolve =>
-      setTimeout(async () => {
-        await signUp({ password: fieldPasswordValue, email: fieldEmailValue });
+    await signUp({ password, email });
 
-        resolve("user subscribed with successful");
-      }, 3000)
-    );
-
-    await toast.promise(
-      subscribeUserAfterTheeSeconds,
-      {
-        pending: "Cadastrando usuário...",
-        success: "Woow, deu tudo certo"
-      },
-      { theme: "colored" }
-    );
-
-    setFieldEmailValue("");
-    setFieldPasswordValue("");
+    setEmail("");
+    setPassword("");
     closeModal();
-    navigate("/dashboard");
   }
 
   return (
@@ -60,8 +41,8 @@ export function ModalSignUp({ isOpen, closeModal }: ModalSignUpProps) {
           <Input
             type="email"
             placeholder="Seu E-mail"
-            onChange={e => setFieldEmailValue(e.target.value)}
-            value={fieldEmailValue}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
             shape="secondary"
             className="focus-effect"
           />
@@ -69,8 +50,8 @@ export function ModalSignUp({ isOpen, closeModal }: ModalSignUpProps) {
           <Input
             type="password"
             placeholder="Sua senha"
-            onChange={e => setFieldPasswordValue(e.target.value)}
-            value={fieldPasswordValue}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
             shape="secondary"
             className="focus-effect"
           />
