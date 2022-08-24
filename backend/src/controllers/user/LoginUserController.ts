@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { compare } from "bcrypt";
-import { prismaClient } from "../prisma/prismaClient";
-import { LoginUserService } from "../services/user/LoginUserService";
+import { LoginUserService } from "../../services/user/LoginUserService";
 
 interface UserCredentials {
   password: string;
