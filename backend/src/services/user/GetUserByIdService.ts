@@ -6,6 +6,10 @@ export class GetUserByIdService {
       where: {
         id: userId,
       },
+
+      include: {
+        barbecues: true
+      }
     });
 
     return user;
