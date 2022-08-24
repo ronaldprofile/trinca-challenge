@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id       String @id @default(uuid())
-  email    String
+  email    String @unique
   password String
 
   barbecues  Barbecue[]
@@ -41,4 +41,6 @@ model Member {
   barbecue         Barbecue? @relation(fields: [memberId], references: [id])
   memberId         String?
   created_at       DateTime  @default(now())
+
+  @@map("member")
 }

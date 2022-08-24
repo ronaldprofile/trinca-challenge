@@ -12,6 +12,10 @@ export class LoginUserService {
       where: {
         email,
       },
+      
+      include: {
+        barbecues: true,
+      },
     });
 
     if (!userExists) {
@@ -24,6 +28,6 @@ export class LoginUserService {
       throw new Error("login or passoword is invalid");
     }
 
-    return userExists
+    return userExists;
   }
 }

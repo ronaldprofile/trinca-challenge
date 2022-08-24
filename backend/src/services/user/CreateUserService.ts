@@ -12,6 +12,10 @@ export class CreateUserService {
       where: {
         email,
       },
+
+      include: {
+        barbecues: true,
+      },
     });
 
     if (userAlreadyExists) {
