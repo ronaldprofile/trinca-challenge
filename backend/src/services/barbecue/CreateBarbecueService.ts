@@ -26,29 +26,12 @@ export class CreateBarbecueService {
         title,
         description,
         amount_collected: 0,
-
-        members: {
-          create: [
-            {
-              name: "Ronald",
-              contribution: 300,
-              hasDrinkIncluded: true,
-              paid: false,
-            },
-            {
-              name: "Marcos",
-              contribution: 600,
-              hasDrinkIncluded: true,
-              paid: true,
-            },
-          ],
-        },
-
-        barbecueId: userId
+        barbecueId: userId,
       },
 
       include: {
         user: true,
+        members: true,
       },
     });
 

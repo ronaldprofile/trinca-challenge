@@ -3,10 +3,11 @@ import { CreateBarbecueService } from "../../services/barbecue/CreateBarbecueSer
 
 export class CreateBarbecueController {
   async handle(request: Request, response: Response) {
-    const { id, title, description } = request.body;
+    const { title, description } = request.body;
+    const { userId } = request.params;
 
     const service = new CreateBarbecueService();
-    const result = await service.create(id, { title, description });
+    const result = await service.create(userId, { title, description });
 
     return response.json(result);
   }
