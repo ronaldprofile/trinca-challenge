@@ -24,10 +24,10 @@ model Barbecue {
   description      String?
   members          Member[]
   amount_collected Int
-
-  user       User?    @relation(fields: [barbecueId], references: [id])
-  barbecueId String?
-  created_at DateTime @default(now())
+  scheduled_day    String?
+  user             User?    @relation(fields: [barbecueId], references: [id])
+  barbecueId       String?
+  created_at       DateTime @default(now())
 
   @@map("barbecues")
 }
