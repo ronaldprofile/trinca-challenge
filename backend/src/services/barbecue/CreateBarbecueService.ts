@@ -3,10 +3,11 @@ import { prismaClient } from "../../prisma/prismaClient";
 interface CreateBarbecue {
   title: string;
   description?: string;
+  scheduled_day?: string;
 }
 
 export class CreateBarbecueService {
-  async create(userId: string, { title, description }: CreateBarbecue) {
+  async create(userId: string, { title, description, scheduled_day }: CreateBarbecue) {
     const userExists = await prismaClient.user.findFirst({
       where: {
         id: userId,
@@ -25,13 +26,18 @@ export class CreateBarbecueService {
       data: {
         title,
         description,
+        scheduled_day,
         amount_collected: 0,
         barbecueId: userId,
       },
 
       include: {
-        user: true,
-        members: true,
+        user: {
+          select: {
+            id: true,
+            email: true,
+          },
+        },
       },
     });
 
