@@ -24,7 +24,7 @@ export const getBarbecueById = async (barbecueId: string | undefined) => {
 
 export function useBarbecue(barbecueId: string | undefined) {
   return useQuery(
-    ["barbecues", barbecueId],
+    ["barbecue", barbecueId],
     async () => await getBarbecueById(barbecueId)
   );
 }

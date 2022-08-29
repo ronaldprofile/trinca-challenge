@@ -6,6 +6,8 @@ import { Input } from "./Input";
 import { toast } from "react-toastify";
 import { Checkbox, CheckboxIndicator } from "./Checkbox";
 import { Check } from "phosphor-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createMember } from "../hooks/barbecue/create-member";
 interface ModalAddMemberProps extends ModalProps {
   barbecueListId: string;
 }
@@ -17,9 +19,32 @@ export function ModalAddMember({
 }: ModalAddMemberProps) {
   const [memberName, setMemberName] = useState("");
   const [memberContribution, setMemberContribution] = useState(15);
-  const [memberHasDrinkIncluded, setMemberHasDrinkIncluded] = useState<boolean | 'indeterminate'>(false);
+  const [memberHasDrinkIncluded, setMemberHasDrinkIncluded] = useState<
+    boolean | "indeterminate"
+  >(false);
 
-  const { addMemberToBarbecue } = useBarbecues();
+  const queryClient = useQueryClient();
+
+  const newMember = {
+    name: memberName,
+    paid: false,
+    contribution: memberContribution,
+    hasDrinkIncluded: memberHasDrinkIncluded,
+  };
+
+  const { mutate, isLoading } = useMutation(
+    async () => createMember(barbecueListId, newMember),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["barbecue", barbecueListId]),
+          toast.success("Membro adicionado", { theme: "colored" });
+      },
+
+      onError: () => {
+        toast.error("Não foi possível criar o membro", { theme: "colored" });
+      },
+    }
+  );
 
   async function handleSubmitForm(event: FormEvent) {
     event.preventDefault();
@@ -29,14 +54,7 @@ export function ModalAddMember({
       return;
     }
 
-    const newMember = {
-      name: memberName,
-      contribution: memberContribution,
-      hasDrinkIncluded: memberHasDrinkIncluded,
-    };
-
-    await addMemberToBarbecue(barbecueListId, newMember);
-    toast.success("Membro adicionado", { theme: "colored" });
+    mutate();
     closeModal();
   }
 
@@ -81,19 +99,24 @@ export function ModalAddMember({
             </div>
 
             <div className="mt-4 flex items-center gap-2">
-              <Checkbox checked={memberHasDrinkIncluded} onCheckedChange={setMemberHasDrinkIncluded} name="include_drinks">
+              <Checkbox
+                checked={memberHasDrinkIncluded}
+                onCheckedChange={setMemberHasDrinkIncluded}
+                name="include_drinks"
+              >
                 <CheckboxIndicator>
                   <Check />
                 </CheckboxIndicator>
               </Checkbox>
 
-
-              <label htmlFor="include_drinks" title="Acréscimo de R$ 20,00">Incluir bebidas</label>
+              <label htmlFor="include_drinks" title="Acréscimo de R$ 20,00">
+                Incluir bebidas
+              </label>
             </div>
           </div>
 
           <Button className="mt-8 w-full text-base focus-effect focus:ring-black">
-            Adicionar
+            {isLoading ? "Adicionando..." : "Adicionar"}
           </Button>
         </form>
       </div>
