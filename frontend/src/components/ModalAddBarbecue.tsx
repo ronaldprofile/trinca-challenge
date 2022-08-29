@@ -1,9 +1,10 @@
 import { FormEvent, useState } from "react";
 import { Modal, ModalProps, ModalTitle } from "./Modal";
-import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { toast } from "react-toastify";
+import { createBarbecue } from "../hooks/barbecue/create-barbecue";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ModalAddBarbecueProps extends ModalProps {}
 
@@ -15,7 +16,27 @@ export function ModalAddBarbecue({
   const [date, setDate] = useState("");
   const [informationAdditional, setInformationAdditional] = useState("");
 
-  const { createNewBarbecue } = useBarbecues();
+  const queryClient = useQueryClient();
+
+  const newBarbecue = {
+    title,
+    scheduled_day: new Date(date),
+    members: [],
+    amount_collected: 0,
+    description: informationAdditional,
+  };
+
+  const { data, isLoading, mutate } = useMutation(
+    async () => await createBarbecue(newBarbecue),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["barbecues"]);
+        toast.success("Churras adicionado", { theme: "colored" });
+        closeModal();
+        clearFieldsForm();
+      },
+    }
+  );
 
   async function handleAddBarbecue(event: FormEvent) {
     event.preventDefault();
@@ -25,20 +46,13 @@ export function ModalAddBarbecue({
       return;
     }
 
-    const newBarbecue = {
-      title,
-      date: new Date(date),
-      informationAdditional,
-    };
+    mutate();
+  }
 
-    await createNewBarbecue(newBarbecue);
-
-    toast.success("Churras adicionado", { theme: "colored" });
-
+  function clearFieldsForm() {
     setTitle("");
     setInformationAdditional("");
     setDate("");
-    closeModal();
   }
 
   return (
@@ -101,7 +115,7 @@ export function ModalAddBarbecue({
           </div>
 
           <Button className="mt-8 w-full text-base focus-effect" color="green">
-            Adicionar
+            {isLoading ? "Adicionando..." : "Adicionar"}
           </Button>
         </form>
       </div>

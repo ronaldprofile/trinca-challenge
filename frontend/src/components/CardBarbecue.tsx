@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Users, CurrencyCircleDollar } from 'phosphor-react'
+import { Users, CurrencyCircleDollar } from "phosphor-react";
 import { formatPrice } from "../utils/formatCurrency";
 import { formatDate } from "../utils/formatDate";
 
@@ -19,20 +19,22 @@ export function CardBarbecue({
   totalMembers,
 }: CardBarbecueProps) {
   const dateFormatted = formatDate(dateToBarbecue, {
-    day: '2-digit', month: '2-digit'
+    day: "2-digit",
+    month: "2-digit",
   });
 
   const dateToBarbecueFormattedFull = formatDate(dateToBarbecue, {
-    day: 'numeric', month: 'numeric', year: 'numeric'
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
   });
 
   return (
     <Link
       to={`/details/${id}`}
       title="ver detalhes"
-      className={`w-full p-6 bg-white text-black shadow-md rounded-sm
-        border-2 border-transparent hover:-translate-y-1 transition-all
-        hover:border-yellow ease-in
+      className={`w-full p-6 bg-white text-black shadow-lg rounded-sm
+        border-2 border-transparent hover:-translate-y-2 transition-all
       `}
     >
       <div className={`flex flex-col gap-2`}>
@@ -47,12 +49,16 @@ export function CardBarbecue({
       </div>
 
       <div className={`mt-12 flex items-center justify-between`}>
-        <span className={`text-sm sm:text-xl font-medium flex items-center gap-3`}>
+        <span
+          className={`text-sm sm:text-xl font-medium flex items-center gap-3`}
+        >
           <Users size={24} />
           {totalMembers}
         </span>
-        
-        <span className={`text-base sm:text-xl font-medium flex items-center gap-3`}>
+
+        <span
+          className={`text-base sm:text-xl font-medium flex items-center gap-3`}
+        >
           <CurrencyCircleDollar size={24} />
           {formatPrice(amountCollected)}
         </span>
