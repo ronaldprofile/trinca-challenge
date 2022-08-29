@@ -13,5 +13,5 @@ export async function createBarbecue(barbecueData: CreateNewBarbecue) {
 
   const barbecue = response.data;
 
-  return { barbecue };
+  return barbecue;
 }
