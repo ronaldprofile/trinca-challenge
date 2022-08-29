@@ -8,7 +8,10 @@ export enum ActionsType {
   CALCULATE_CONTRIBUTION_MEMBERS = "CALCULATE_CONTRIBUTION_MEMBERS",
 }
 
-export function addNewBarbecueAction(newBarbecue: IBarbecue) {
+type CreateBarbecue = Omit<IBarbecue, 'id'>
+
+
+export function addNewBarbecueAction(newBarbecue: CreateBarbecue) {
   return {
     type: ActionsType.ADD_NEW_BARBECUE,
     payload: {

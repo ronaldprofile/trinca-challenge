@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { MemberItem } from "../components/MemberList/MemberItem";
@@ -8,24 +7,31 @@ import { ModalAddMember } from "../components/ModalAddMember";
 import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
 import { formatPrice } from "../utils/formatCurrency";
 import { formatDate } from "../utils/formatDate";
+import { useBarbecue } from "../hooks/barbecue/get-barbecue-by-id";
+import { Loading } from "../components/Loading";
 
 export function Details() {
-  const { id: currentBarbecueId } = useParams();
+  const { id: barbecueId } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const { barbecues, calculateContributionMembers } = useBarbecues();
+  const { data: barbecue, isLoading } = useBarbecue(barbecueId);
 
-  const currentBarbecue = barbecues.find((barbecue) =>
-    barbecue.id === currentBarbecueId ? barbecue : null
-  );
+  if (!barbecue) {
+    return (
+      <div className="w-screen h-screen bg-barbecue bg-yellow">
+        <Loading />
+      </div>
+    );
+  }
 
-  const formattedDate = formatDate(new Date(currentBarbecue!.date), {
-    day: '2-digit', month: '2-digit'
-  })
+  const scheduledDay = new Date(barbecue.scheduled_day);
 
-  useEffect(() => {
-    calculateContributionMembers(currentBarbecueId!);
-  }, [currentBarbecueId]);
+  const formattedDate = formatDate(scheduledDay, {
+    day: "2-digit",
+    month: "2-digit",
+  });
+
+  const membersLength = barbecue.members.length;
 
   function closeModal() {
     setIsOpenModal(false);
@@ -42,7 +48,11 @@ export function Details() {
       <main className={`-mt-28`}>
         <div className={`px-6`}>
           <div className="mb-6 flex flex-col gap-2 sm:justify-between sm:flex-row">
-            <Link to="/dashboard" title="Voltar para o inicio" className="h-[50px] px-5 transparent text-black hover:bg-black hover:text-white border border-black transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase rounded md:text-sm">
+            <Link
+              to="/dashboard"
+              title="Voltar para o inicio"
+              className="h-[50px] px-5 transparent text-black hover:bg-black hover:text-white border border-black transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase rounded md:text-sm"
+            >
               <ArrowLeft size={24} />
               Voltar
             </Link>
@@ -60,37 +70,44 @@ export function Details() {
           <div className="bg-white shadow-md p-6">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-2">
-                <time className="text-base sm:text-[28px] font-medium">{formattedDate}</time>
-                <strong className="text-base sm:text-4xl">{currentBarbecue?.title}</strong>
+                <time className="text-base sm:text-[28px] font-medium">
+                  {formattedDate}
+                </time>
+                <strong className="text-base sm:text-4xl">
+                  {barbecue?.title}
+                </strong>
 
-                {currentBarbecue?.informationAdditional && (
-                  <span>{currentBarbecue.informationAdditional}</span>
-                )}
+                {barbecue?.description && <span>{barbecue.description}</span>}
               </div>
 
               <div className="flex flex-col gap-4">
-                <span className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}>
+                <span
+                  className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}
+                >
                   <Users size={24} />
-                  {currentBarbecue?.members.length}
+                  {barbecue?.members.length}
                 </span>
-                <span className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}>
+                <span
+                  className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}
+                >
                   <CurrencyCircleDollar size={24} />
-                  {formatPrice(currentBarbecue?.totalAmountCollected!)}
+                  {formatPrice(barbecue?.amount_collected!)}
                 </span>
               </div>
             </div>
 
             <div className="mt-10">
               <div className="flex flex-col divide-y">
-                {currentBarbecue!.members.length <= 0 ? (
+                {membersLength <= 0 ? (
                   <span>nenhum membro por aqui</span>
                 ) : (
-                  currentBarbecue?.members.map((member) => {
+                  !isLoading &&
+                  barbecue?.members.map((member) => {
                     return (
                       <MemberItem
                         key={member.id}
                         memberId={member.id}
-                        barbecueListId={currentBarbecueId}
+                        barbecueListId={barbecueId}
                         name={member.name}
                         contribution={member.contribution}
                         hasDrinkIncluded={member.hasDrinkIncluded}
@@ -109,7 +126,7 @@ export function Details() {
         <ModalAddMember
           isOpen={isOpenModal}
           closeModal={closeModal}
-          barbecueListId={currentBarbecueId!}
+          barbecueListId={barbecueId!}
         />
       )}
     </div>

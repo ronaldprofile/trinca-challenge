@@ -3,19 +3,19 @@ import { ActionsType } from "./actions";
 import { IBarbecue } from "../../types";
 
 interface BarbecuesState {
-  barbecues: IBarbecue[];
+  barbecues: IBarbecue[] | undefined;
 }
 
 export function barbecuesReducer(state: BarbecuesState, action: any) {
   if (action.type === ActionsType.ADD_NEW_BARBECUE) {
     return produce(state, (draft) => {
-      draft.barbecues.push(action.payload.newBarbecue);
+      draft.barbecues?.push();
     });
   }
 
   if (action.type === ActionsType.ADD_NEW_MEMBER_T0_BARBECUE) {
     return produce(state, (draft) => {
-      const barbecueExists = draft.barbecues.find((barbecue) => {
+      const barbecueExists = draft.barbecues?.find((barbecue) => {
         return barbecue.id === action.payload.barbecueListId ? barbecue : null;
       });
 
@@ -25,7 +25,7 @@ export function barbecuesReducer(state: BarbecuesState, action: any) {
 
   if (action.type === ActionsType.UPDATE_MEMBER_PAYMENT_STATUS) {
     return produce(state, (draft) => {
-      const barbecueExists = draft.barbecues.find((barbecue) => {
+      const barbecueExists = draft.barbecues?.find((barbecue) => {
         return barbecue.id === action.payload.barbecueListId ? barbecue : null;
       });
 
@@ -41,22 +41,23 @@ export function barbecuesReducer(state: BarbecuesState, action: any) {
 
   if (action.type === ActionsType.CALCULATE_CONTRIBUTION_MEMBERS) {
     return produce(state, (draft) => {
-      const barbecueExists = draft.barbecues.find(
+      const barbecueExists = draft.barbecues?.find(
         (barbecue) => barbecue.id === action.payload.barbecueListId
       );
 
       if (barbecueExists != undefined) {
-        const membersContribution = barbecueExists.members.filter(member => member.paid === true)
-        .reduce((acc, member) => {
-          const drinkValue = member.hasDrinkIncluded ? 20 : 0
-          
-          return acc + member.contribution + drinkValue
-        }, 0)
+        const membersContribution = barbecueExists.members
+          .filter((member) => member.paid === true)
+          .reduce((acc, member) => {
+            const drinkValue = member.hasDrinkIncluded ? 20 : 0;
 
-        barbecueExists.totalAmountCollected = membersContribution
+            return acc + member.contribution + drinkValue;
+          }, 0);
+
+        barbecueExists.amount_collected = membersContribution;
       }
     });
   }
 
-  return state; 
+  return state;
 }

@@ -7,8 +7,8 @@ import {
 } from "../../reducers/barbecue/actions";
 
 import { barbecuesReducer } from "../../reducers/barbecue/reducer";
-import { getLocalStorage, setLocalStorage } from "../../utils";
-import { IBarbecue, IMember } from "../../types";
+import { setLocalStorage } from "../../utils";
+import { IMember } from "../../types";
 
 import { v4 as useId } from "uuid";
 import { BarbecueContext } from "./BarbecueContext";
@@ -26,7 +26,7 @@ interface CreateNewBarbecueData {
 export interface CreateNewMemberToBarbecue {
   name: string;
   contribution: number;
-  hasDrinkIncluded: boolean | 'indeterminate';
+  hasDrinkIncluded: boolean | "indeterminate";
 }
 
 export function BarbecueContextProvider({
@@ -38,17 +38,7 @@ export function BarbecueContextProvider({
       barbecues: [],
     },
     () => {
-      const storedStateAsJSON = getLocalStorage<{ barbecues: IBarbecue[] }>(
-        "@trinca-barbecues-list"
-      );
-
-      if (storedStateAsJSON) {
-        return storedStateAsJSON;
-      }
-
-      return {
-        barbecues: [],
-      };
+      return { barbecues: [] };
     }
   );
 
@@ -59,15 +49,12 @@ export function BarbecueContextProvider({
   }, [barbecuesState]);
 
   async function createNewBarbecue(data: CreateNewBarbecueData) {
-    const id = useId();
-
-    const newBarbecue: IBarbecue = {
-      id,
+    const newBarbecue = {
       title: data.title,
-      date: data.date,
+      scheduled_day: data.date,
       members: [],
-      totalAmountCollected: 0,
-      informationAdditional: data.informationAdditional,
+      amount_collected: 0,
+      description: data.informationAdditional,
     };
 
     dispatch(addNewBarbecueAction(newBarbecue));
