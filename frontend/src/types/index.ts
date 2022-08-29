@@ -6,11 +6,11 @@ export interface IUser {
 export interface IBarbecue {
   id: string;
   title: string;
-  date: Date | string;
-  informationAdditional?: string;
+  description?: string;
+  amount_collected: number;
+  scheduled_day: Date | string;
 
   members: IMember[];
-  totalAmountCollected: number;
 }
 
 export interface IMember {
