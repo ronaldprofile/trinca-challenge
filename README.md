@@ -7,15 +7,18 @@ https://user-images.githubusercontent.com/81709922/184193585-2a07ff9e-6c80-44e6-
 Technical challenge Frontend. Create a solution to manage random encounters, which involves a conversation circle and barbecues.
 
 
-## Coming soon :rocket:
+## Next Level :rocket:
 
-- Authentication with email and password
-- Own backend using Node JS and Prisma ORM
+- Authentication with email and password (done)
+- Own backend using Node JS and Prisma ORM (done)
 
 ## Techs
 
 - React JS
 - Typescript
+- Node JS
+- Prisma IO
+- Express
 - React Router
 - Tailwind CSS
 - Immer
