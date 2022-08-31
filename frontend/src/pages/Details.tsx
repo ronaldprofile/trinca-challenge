@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useGetBarbecueById } from "../hooks/barbecue/get-barbecue-by-id";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
-import { MemberItem } from "../components/MemberList/MemberItem";
-import { ModalAddMember } from "../components/ModalAddMember";
-import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
-import { formatPrice } from "../utils/formatCurrency";
 import { formatDate } from "../utils/formatDate";
-import { useBarbecue } from "../hooks/barbecue/get-barbecue-by-id";
 import { Loading } from "../components/Loading";
+import { formatPrice } from "../utils/formatCurrency";
+import { ModalAddMember } from "../components/ModalAddMember";
+import { MemberItem } from "../components/MemberList/MemberItem";
+import { ArrowLeft, Users, CurrencyCircleDollar } from "phosphor-react";
 
 export function Details() {
-  const { id: barbecueId } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { id: barbecueId } = useParams();
 
-  const { data: barbecue, isLoading } = useBarbecue(barbecueId);
+  const { data: barbecue, isLoading } = useGetBarbecueById(barbecueId);
 
   if (!barbecue) {
     return (
@@ -77,7 +77,7 @@ export function Details() {
                   {barbecue?.title}
                 </strong>
 
-                {barbecue?.description && <span>{barbecue.description}</span>}
+                {barbecue.description && <span>{barbecue.description}</span>}
               </div>
 
               <div className="flex flex-col gap-4">
@@ -85,13 +85,13 @@ export function Details() {
                   className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}
                 >
                   <Users size={24} />
-                  {barbecue?.members.length}
+                  {membersLength}
                 </span>
                 <span
                   className={`text-base sm:text-xl font-medium flex items-center gap-3 transition-all`}
                 >
                   <CurrencyCircleDollar size={24} />
-                  {formatPrice(barbecue?.amount_collected!)}
+                  {formatPrice(barbecue.amount_collected!)}
                 </span>
               </div>
             </div>
@@ -102,16 +102,12 @@ export function Details() {
                   <span>nenhum membro por aqui</span>
                 ) : (
                   !isLoading &&
-                  barbecue?.members.map((member) => {
+                  barbecue.members.map((member) => {
                     return (
                       <MemberItem
                         key={member.id}
-                        memberId={member.id}
-                        barbecueListId={barbecueId}
-                        name={member.name}
-                        contribution={member.contribution}
-                        hasDrinkIncluded={member.hasDrinkIncluded}
-                        paid={member.paid}
+                        member={member}
+                        barbecueId={barbecueId}
                       />
                     );
                   })

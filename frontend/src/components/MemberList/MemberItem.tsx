@@ -1,64 +1,65 @@
-import { useEffect, useState } from "react";
-import { useBarbecues } from "../../context/Barbecue/BarbecueContext";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  updateMemberPaymentStatus,
+  updateAmountBarbecue,
+} from "../../hooks/barbecue/update-amount-barbecue";
+import { Checkbox, CheckboxIndicator } from "../Checkbox";
 import { Wine, Check as CheckIcon } from "phosphor-react";
 import { formatPrice } from "../../utils/formatCurrency";
-import { Checkbox, CheckboxIndicator } from "../Checkbox";
+import { IMember } from "../../types";
 
 interface MemberItemProps {
-  barbecueListId?: string;
-  memberId: string;
-  name: string;
-  contribution: number;
-  hasDrinkIncluded: boolean | 'indeterminate';
-  paid: boolean;
+  member: IMember;
+  barbecueId: string | undefined;
 }
 
+type MemberPaidContribution = boolean | "indeterminate";
+
 export function MemberItem({
-  memberId,
-  barbecueListId,
-  name,
-  contribution,
-  hasDrinkIncluded,
-  paid,
+  barbecueId,
+  member,
 }: MemberItemProps) {
-  const [memberPaidContribution, setMemberPaidContribution] = useState<
-    boolean | "indeterminate"
-  >(paid);
+  const [checked, setChecked] = useState<MemberPaidContribution>(member.paid);
+  const queryClient = useQueryClient();
 
-  const { updateMemberPaymentStatus, calculateContributionMembers } =
-    useBarbecues();
+  const { mutateAsync } = useMutation(
+    async () => {
+      await updateMemberPaymentStatus({
+        memberId: member.id,
+        paid: member.paid,
+      });
 
-  useEffect(() => {
-    calculateContributionMembers(barbecueListId!);
-  }, [memberPaidContribution]);
+      await updateAmountBarbecue({
+        barbecueId,
+        membersContribution: totalMemberWillPay(20, member.contribution),
+      });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["barbecue", barbecueId]);
+      },
+    }
+  );
 
-  function totalMemberWillPay(drink: number, contribution: number) {
-    if (hasDrinkIncluded) {
+  const totalMemberWillPay = (drink: number, contribution: number) => {
+    if (member.hasDrinkIncluded) {
       const total = Number(contribution + drink);
 
       return total;
     } else {
       return contribution;
     }
-  }
-
-  const total = totalMemberWillPay(20, contribution);
+  };
 
   return (
     <div className="py-[10px] flex sm:flex-row sm:items-center justify-between">
       <div className="flex items-center gap-3">
         <Checkbox
           className="transition-colors"
-          title={`${
-            memberPaidContribution
-              ? "pagamento concluído"
-              : "pagamento não concluído"
-          }`}
-          name="member_paid_contribution"
-          id="member_paid_contribution"
-          checked={memberPaidContribution}
-          onCheckedChange={setMemberPaidContribution}
-          onClick={() => updateMemberPaymentStatus(memberId, barbecueListId!)}
+          checked={checked}
+          onCheckedChange={setChecked}
+          onClick={async () => await mutateAsync()}
         >
           <CheckboxIndicator>
             <CheckIcon />
@@ -67,13 +68,13 @@ export function MemberItem({
 
         <span
           className={`text-base sm:text-xl font-medium text-black/80 transition-all ${
-            paid && "line-through"
+            member.paid && "line-through"
           }`}
         >
-          {name}
+          {member.name}
         </span>
 
-        {hasDrinkIncluded && (
+        {member.hasDrinkIncluded && (
           <span
             className="text-base sm:text-2xl text-black cursor-pointer"
             title={`Bebida inclusa, R$ 20,00  `}
@@ -85,10 +86,10 @@ export function MemberItem({
 
       <span
         className={`text-base sm:text-xl font-medium text-black/80 transition-all ${
-          paid && "line-through"
+          member.paid && "line-through"
         }`}
       >
-        {formatPrice(total)}
+        {formatPrice(totalMemberWillPay(20, member.contribution))}
       </span>
     </div>
   );

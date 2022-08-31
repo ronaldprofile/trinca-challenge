@@ -26,7 +26,7 @@ export function ModalAddBarbecue({
     description: informationAdditional,
   };
 
-  const { data, isLoading, mutate } = useMutation(
+  const { isLoading, mutateAsync } = useMutation(
     async () => await createBarbecue(newBarbecue),
     {
       onSuccess: () => {
@@ -46,7 +46,7 @@ export function ModalAddBarbecue({
       return;
     }
 
-    mutate();
+    await mutateAsync();
   }
 
   function clearFieldsForm() {
