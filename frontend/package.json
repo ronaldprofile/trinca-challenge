@@ -19,9 +19,11 @@
     "immer": "^9.0.15",
     "phosphor-react": "^1.4.1",
     "react": "^18.0.0",
+    "react-confetti": "^6.1.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "6",
     "react-toastify": "^9.0.5",
+    "react-use": "^17.4.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

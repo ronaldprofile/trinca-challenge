@@ -7,10 +7,12 @@ import { Button } from "../components/Button";
 import { CardBarbecue } from "../components/CardBarbecue";
 import { useBarbecues } from "../hooks/barbecue/get-all-barbecues";
 import { Loading } from "../components/Loading";
+import { useConfetti } from "../hooks/useConfetti";
 
 export function Dashboard() {
   const { user, signOut } = useAuth();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { Confetti, showConfetti, hideConfetti } = useConfetti();
 
   const { data, isLoading } = useBarbecues();
 
@@ -21,6 +23,14 @@ export function Dashboard() {
   function openModal() {
     setIsOpenModal(true);
   }
+
+  const startConffetiAnimation = () => {
+    showConfetti();
+
+    setTimeout(() => {
+      hideConfetti();
+    }, 7000);
+  };
 
   return (
     <div className={`min-h-screen overflow-x-hidden`}>
@@ -33,7 +43,7 @@ export function Dashboard() {
               onClick={openModal}
               className="text-xs md:text-sm text-white bg-black"
             >
-              Adicionar Churras
+              Adicionar evento
             </Button>
 
             {user && (
@@ -73,8 +83,14 @@ export function Dashboard() {
         </div>
       </main>
 
+      {Confetti && <Confetti />}
+
       {isOpenModal && (
-        <ModalAddBarbecue isOpen={isOpenModal} closeModal={closeModal} />
+        <ModalAddBarbecue
+          isOpen={isOpenModal}
+          closeModal={closeModal}
+          onSuccessShowConffeti={startConffetiAnimation}
+        />
       )}
 
       {isLoading && <Loading />}

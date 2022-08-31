@@ -6,11 +6,14 @@ import { toast } from "react-toastify";
 import { createBarbecue } from "../hooks/barbecue/create-barbecue";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-interface ModalAddBarbecueProps extends ModalProps {}
+interface ModalAddBarbecueProps extends ModalProps {
+  onSuccessShowConffeti: () => void;
+}
 
 export function ModalAddBarbecue({
   isOpen,
   closeModal,
+  onSuccessShowConffeti,
 }: ModalAddBarbecueProps) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
@@ -31,9 +34,10 @@ export function ModalAddBarbecue({
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["barbecues"]);
-        toast.success("Churras adicionado", { theme: "colored" });
+        toast.success("Evento adicionado", { theme: "colored" });
         closeModal();
         clearFieldsForm();
+        onSuccessShowConffeti();
       },
     }
   );
