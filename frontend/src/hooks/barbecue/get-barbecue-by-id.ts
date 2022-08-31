@@ -8,21 +8,19 @@ type BarbecueResponse = IBarbecue;
 export const getBarbecueById = async (barbecueId: string | undefined) => {
   const userId = getLocalStorage<string>("@trinca-user$id");
 
+  const url = `/barbecue/${userId}/${barbecueId}`;
+
   try {
-    const response = await api.get<BarbecueResponse>(
-      `/barbecue/${userId}/${barbecueId}`
-    );
+    const response = await api.get<BarbecueResponse>(url);
     const data = response.data;
 
     return data;
   } catch (error) {
-    if (error) {
-      console.log(error);
-    }
+    if (error) console.log(error);
   }
 };
 
-export function useBarbecue(barbecueId: string | undefined) {
+export function useGetBarbecueById(barbecueId: string | undefined) {
   return useQuery(
     ["barbecue", barbecueId],
     async () => await getBarbecueById(barbecueId)

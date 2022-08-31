@@ -31,10 +31,6 @@ export class CreateMemberService {
         hasDrinkIncluded,
         memberId: barbecueId,
       },
-
-      include: {
-        barbecue: true,
-      },
     });
 
     return newMember;

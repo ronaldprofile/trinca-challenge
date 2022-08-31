@@ -7,7 +7,12 @@ export class CreateBarbecueController {
     const { userId } = request.params;
 
     const service = new CreateBarbecueService();
-    const result = await service.create(userId, { title, description, scheduled_day });
+    const result = await service.create({
+      userId,
+      title,
+      description,
+      scheduled_day,
+    });
 
     return response.json(result);
   }
