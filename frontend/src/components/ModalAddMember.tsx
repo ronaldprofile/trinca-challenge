@@ -1,6 +1,5 @@
 import { FormEvent, useState } from "react";
 import { Modal, ModalProps, ModalTitle } from "./Modal";
-import { useBarbecues } from "../context/Barbecue/BarbecueContext";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { toast } from "react-toastify";
@@ -60,29 +59,34 @@ export function ModalAddMember({
 
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
-      <ModalTitle title="Adicionar membro" />
+      <ModalTitle title="Novo membro" />
 
       <div className="mt-8">
         <form onSubmit={handleSubmitForm}>
           <div className="mb-6">
-            <label htmlFor="name" className="sr-only">
-              Nome do membro
-            </label>
-            <Input
-              type="text"
-              id="name"
-              shape="secondary"
-              className="w-full focus-effect"
-              placeholder="Nome do membro"
-              value={memberName}
-              onChange={(event) => setMemberName(event.target.value)}
-            />
+            <div className="flex flex-col gap-2">
+              <label htmlFor="name" className="text-sm font-normal text-label">
+                Nome do membro
+              </label>
+              <Input
+                type="text"
+                id="name"
+                shape="secondary"
+                className="w-full focus-effect"
+                placeholder="Nome do membro"
+                value={memberName}
+                onChange={(event) => setMemberName(event.target.value)}
+              />
+            </div>
           </div>
 
           <div>
-            <div>
-              <label htmlFor="contribution" className="sr-only">
-                Contribuição
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="contribution"
+                className="text-sm font-normal text-label"
+              >
+                Contribuição do membro
               </label>
               <Input
                 type="number"

@@ -1,7 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useAuth } from "../context/Auth/AuthContext";
 import { ModalSignUp } from "../components/ModalSignUp";
-import { TrincaLogo } from "../components/TrincaLogo";
 import { Loading } from "../components/Loading";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
@@ -107,10 +106,6 @@ export function Subscribe() {
             </Button>
           </div>
         </div>
-
-        <footer>
-          <TrincaLogo />
-        </footer>
 
         {isOpenModal && (
           <ModalSignUp isOpen={isOpenModal} closeModal={closeModal} />

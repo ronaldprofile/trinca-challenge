@@ -10,7 +10,7 @@ export function Header({ title, className }: HeaderProps) {
     <header className={clsx(`w-screen`, className)}>
       <div className={`flex items-center justify-center`}>
         <h1 className={`text-[32px] text-black font-bold`}>
-          {title ? title : "Agenda de churras"}
+          {title ? title : "Agenda de eventos"}
         </h1>
       </div>
     </header>

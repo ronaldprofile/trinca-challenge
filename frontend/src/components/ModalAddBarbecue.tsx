@@ -61,7 +61,7 @@ export function ModalAddBarbecue({
 
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
-      <ModalTitle title="Adicionar churra" />
+      <ModalTitle title="Novo evento" />
 
       <div className="mt-8">
         <form onSubmit={handleAddBarbecue}>
