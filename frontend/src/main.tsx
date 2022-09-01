@@ -5,14 +5,14 @@ import { BarbecueContextProvider } from "./context/Barbecue/BarbecueProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./services/queryClient";
+import { SkeletonTheme } from "react-loading-skeleton";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { App } from "./App";
 
 import "./styles/global.css";
 import "react-toastify/dist/ReactToastify.css";
-import 'react-loading-skeleton/dist/skeleton.css'
-
+import "react-loading-skeleton/dist/skeleton.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -20,7 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
           <BarbecueContextProvider>
-            <App />
+            <SkeletonTheme baseColor="#E5E5E5">
+              <App />
+            </SkeletonTheme>
           </BarbecueContextProvider>
           <ToastContainer />
         </AuthContextProvider>

@@ -7,10 +7,12 @@ import {
 import { Checkbox, CheckboxIndicator } from "../Checkbox";
 import { Wine, Check as CheckIcon } from "phosphor-react";
 import { formatPrice } from "../../utils/formatCurrency";
+import Skeleton from "react-loading-skeleton";
 import { IMember } from "../../types";
 
 interface MemberItemProps {
   member: IMember;
+  isFetchingBarbecue: boolean;
   barbecueId: string | undefined;
 }
 
@@ -19,6 +21,7 @@ type MemberPaidContribution = boolean | "indeterminate";
 export function MemberItem({
   barbecueId,
   member,
+  isFetchingBarbecue,
 }: MemberItemProps) {
   const [checked, setChecked] = useState<MemberPaidContribution>(member.paid);
   const queryClient = useQueryClient();
@@ -52,45 +55,49 @@ export function MemberItem({
     }
   };
 
-  return (
-    <div className="py-[10px] flex sm:flex-row sm:items-center justify-between">
-      <div className="flex items-center gap-3">
-        <Checkbox
-          className="transition-colors"
-          checked={checked}
-          onCheckedChange={setChecked}
-          onClick={async () => await mutateAsync()}
-        >
-          <CheckboxIndicator>
-            <CheckIcon />
-          </CheckboxIndicator>
-        </Checkbox>
+  if (!isFetchingBarbecue) {
+    return (
+      <div className="py-[10px] flex sm:flex-row sm:items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Checkbox
+            className="transition-colors"
+            checked={checked}
+            onCheckedChange={setChecked}
+            onClick={async () => await mutateAsync()}
+          >
+            <CheckboxIndicator>
+              <CheckIcon />
+            </CheckboxIndicator>
+          </Checkbox>
+
+          <span
+            className={`text-base sm:text-xl font-medium text-black/80 transition-all ${
+              member.paid && "line-through"
+            }`}
+          >
+            {member.name}
+          </span>
+
+          {member.hasDrinkIncluded && (
+            <span
+              className="text-base sm:text-2xl text-black cursor-pointer"
+              title={`Bebida inclusa, R$ 20,00  `}
+            >
+              <Wine weight="fill" />
+            </span>
+          )}
+        </div>
 
         <span
           className={`text-base sm:text-xl font-medium text-black/80 transition-all ${
             member.paid && "line-through"
           }`}
         >
-          {member.name}
+          {formatPrice(totalMemberWillPay(20, member.contribution))}
         </span>
-
-        {member.hasDrinkIncluded && (
-          <span
-            className="text-base sm:text-2xl text-black cursor-pointer"
-            title={`Bebida inclusa, R$ 20,00  `}
-          >
-            <Wine weight="fill" />
-          </span>
-        )}
       </div>
+    );
+  }
 
-      <span
-        className={`text-base sm:text-xl font-medium text-black/80 transition-all ${
-          member.paid && "line-through"
-        }`}
-      >
-        {formatPrice(totalMemberWillPay(20, member.contribution))}
-      </span>
-    </div>
-  );
+  return <Skeleton height={35} />;
 }

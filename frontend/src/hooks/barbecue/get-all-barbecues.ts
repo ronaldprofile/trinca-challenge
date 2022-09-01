@@ -23,7 +23,7 @@ export const getAllBarbecues = async () => {
       };
     });
 
-    return { barbecues };
+    return barbecues;
   } catch (error) {
     if (error) {
       console.log(error);

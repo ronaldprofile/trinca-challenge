@@ -6,7 +6,6 @@ import { Header } from "../components/Header";
 import { Button } from "../components/Button";
 import { CardBarbecue } from "../components/CardBarbecue";
 import { useBarbecues } from "../hooks/barbecue/get-all-barbecues";
-import { Loading } from "../components/Loading";
 import { useConfetti } from "../hooks/useConfetti";
 
 export function Dashboard() {
@@ -14,15 +13,14 @@ export function Dashboard() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { Confetti, showConfetti, hideConfetti } = useConfetti();
 
-  const { data, isLoading } = useBarbecues();
+  const {
+    data: barbecues,
+    isLoading,
+    isFetching: isFetchingBarbecue,
+  } = useBarbecues();
 
-  function closeModal() {
-    setIsOpenModal(false);
-  }
-
-  function openModal() {
-    setIsOpenModal(true);
-  }
+  const closeModal = () => setIsOpenModal(false);
+  const openModal = () => setIsOpenModal(true);
 
   const startConffetiAnimation = () => {
     showConfetti();
@@ -60,7 +58,7 @@ export function Dashboard() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data?.barbecues.length === 0 && (
+            {barbecues?.length === 0 && (
               <div className="p-5 w-full bg-white shadow-md">
                 <span className="font-normal text-xl">
                   Nenhum evento adicionado
@@ -69,14 +67,11 @@ export function Dashboard() {
             )}
 
             {!isLoading &&
-              data?.barbecues?.map((barbecue) => (
+              barbecues?.map((barbecue) => (
                 <CardBarbecue
                   key={barbecue.id}
-                  id={barbecue.id}
-                  title={barbecue.title}
-                  date={new Date(barbecue.scheduled_day)}
-                  amountCollected={barbecue.amount_collected}
-                  totalMembers={barbecue.members.length}
+                  barbecue={barbecue}
+                  isFetchingBarbecue={isFetchingBarbecue}
                 />
               ))}
           </div>
@@ -92,8 +87,6 @@ export function Dashboard() {
           onSuccessShowConffeti={startConffetiAnimation}
         />
       )}
-
-      {isLoading && <Loading />}
     </div>
   );
 }
