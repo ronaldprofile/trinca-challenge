@@ -5,7 +5,6 @@ const animationLoading = keyframes({
     transform: "scaleY(2)",
   },
 });
-
 export const LoadingContainer = styled("div", {
   width: "100vw",
   height: "100vh",
@@ -13,10 +12,12 @@ export const LoadingContainer = styled("div", {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  background: "rgba(0, 0, 0, 0.7)",
+  background: "rgba(30,41,51,.45)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  backdropFilter: "blur(4px)",
+  zIndex: 200,
 
   span: {
     width: "1rem",

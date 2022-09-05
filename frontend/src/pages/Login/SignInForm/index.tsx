@@ -4,6 +4,7 @@ import { Input } from "../../../components/Input";
 import { useAuth } from "../../../context/Auth/AuthContext";
 import { FormError } from "../../../components/FormError";
 import { Button } from "../../../components/Button";
+import { EnvelopeSimple, Lock } from "phosphor-react";
 
 interface ErrorType {
   errors: {
@@ -51,7 +52,7 @@ export function SignInForm() {
 
       <form className="mt-14" onSubmit={handleSubmit(handleAuthenticate)}>
         <div className={`mb-9`}>
-          <div className={`flex flex-col gap-4`}>
+          <div className={`flex flex-col gap-4 relative`}>
             <label
               htmlFor="email"
               className={`text-xl font-bold text-black/80 sr-only`}
@@ -59,14 +60,23 @@ export function SignInForm() {
               Login
             </label>
 
-            <Input id="email" placeholder="Email" {...register("email")} />
+            <Input
+              id="email"
+              placeholder="Email"
+              {...register("email")}
+              className="pl-10"
+            />
+
+            <div className="absolute left-4 top-1/2 -translate-y-2/4">
+              <EnvelopeSimple weight="thin" />
+            </div>
           </div>
 
           <FormError error={errors.email?.message} />
         </div>
 
         <div>
-          <div className={`flex flex-col gap-4`}>
+          <div className={`flex flex-col gap-4 relative`}>
             <label
               htmlFor="password"
               className={`text-xl font-bold text-black/80 sr-only`}
@@ -78,8 +88,13 @@ export function SignInForm() {
               type="password"
               id="password"
               placeholder="Senha"
+              className="pl-10"
               {...register("password")}
             />
+
+            <div className="absolute left-4 top-1/2 -translate-y-2/4">
+              <Lock weight="thin" />
+            </div>
           </div>
 
           <FormError error={errors.password?.message} />
