@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply font-sans;
+  @apply font-sans bg-[#f2f2fa];
 }
 
 .focus-effect {
-  @apply focus:ring-2 focus:ring-offset-white focus:ring-offset-2 focus:ring-green-500;
+  @apply hover:border-[#fb1] hover:shadow-primary-focus focus:border-[#fb1] focus:shadow-primary-focus focus:outline-none;
 }
