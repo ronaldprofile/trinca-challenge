@@ -28,7 +28,7 @@ export function Details() {
 
       <main className={`-mt-28`}>
         <div className={`px-6`}>
-          <HeaderActions />
+          <HeaderActions barbecueId={barbecueId} />
 
           <div className="bg-white shadow-md p-6">
             <BarbecueInfo
