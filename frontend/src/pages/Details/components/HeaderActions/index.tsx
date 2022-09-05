@@ -22,16 +22,17 @@ export function HeaderActions({ barbecueId }: HeaderActionsProps) {
           title="Voltar para o inicio"
           className="h-[50px] px-5 transparent text-black hover:bg-black hover:text-white border border-black transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase rounded md:text-sm"
         >
-          <ArrowLeft size={24} />
+          <ArrowLeft size={20} />
           Voltar
         </Link>
 
         <Button
           onClick={openModal}
-          className="flex items-center justify-center gap-2 text-xs md:text-sm focus-effect focus:ring-black"
+          shape="secondary"
+          className="flex items-center justify-center gap-2 text-xs md:text-sm"
           title="Adicionar membro"
         >
-          <Users size={24} />
+          <Users size={20} />
           Adicionar membro
         </Button>
       </div>

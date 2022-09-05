@@ -39,7 +39,8 @@ export function Dashboard() {
           <div className="mb-6 flex items-center justify-end gap-3">
             <Button
               onClick={openModal}
-              className="text-xs md:text-sm text-white bg-black"
+              shape="secondary"
+              className="text-xs md:text-sm"
             >
               Adicionar evento
             </Button>
@@ -47,11 +48,10 @@ export function Dashboard() {
             {user && (
               <Button
                 onClick={signOut}
-                shape="secondary"
-                danger
+                shape="danger"
                 className="text-xs md:text-sm flex items-center gap-2"
               >
-                <SignOut size={24} className="text-xs md:text-2xl" />
+                <SignOut size={20} className="text-xs md:text-2xl" />
                 sair
               </Button>
             )}
