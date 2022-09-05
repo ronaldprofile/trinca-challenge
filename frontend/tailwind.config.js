@@ -3,6 +3,15 @@ module.exports = {
   content: ["./src/**/*.tsx"],
   theme: {
     extend: {
+      flex: {
+        "7": "7 1 0%",
+        "8": "8 1 0%",
+      },
+
+      boxShadow: {
+        "primary-focus": "0 0 0 3px #fea"
+      },
+
       fontFamily: {
         sans: "Roboto, sans-serif"
       },
