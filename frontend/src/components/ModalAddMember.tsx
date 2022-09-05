@@ -119,7 +119,7 @@ export function ModalAddMember({
             </div>
           </div>
 
-          <Button className="mt-8 w-full text-base focus-effect focus:ring-black">
+          <Button className="mt-8 w-full text-base">
             {isLoading ? "Adicionando..." : "Adicionar"}
           </Button>
         </form>

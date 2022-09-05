@@ -1,30 +1,50 @@
-import { useState, FormEvent } from "react";
 import { useAuth } from "../context/Auth/AuthContext";
 
 import { Modal, ModalDescription, ModalProps, ModalTitle } from "./Modal";
 import { Button } from "./Button";
 import { Input } from "./Input";
-import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as zod from "zod";
+import { FormError } from "./FormError";
+
+const signUpSchemaForm = zod.object({
+  email: zod
+    .string()
+    .min(1, "E-mail é essencial")
+    .email("Insira um e-mail válido"),
+  password: zod.string().min(4, "Senha deve conter no mínimo 4 caracteres"),
+});
+
+export type signUpFormData = zod.infer<typeof signUpSchemaForm>;
+type FormDataInputs = signUpFormData;
 
 interface ModalSignUpProps extends ModalProps {}
 
 export function ModalSignUp({ isOpen, closeModal }: ModalSignUpProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<signUpFormData>({
+    resolver: zodResolver(signUpSchemaForm),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   const { signUp } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  async function handleSubscribe(event: FormEvent) {
-    event.preventDefault();
+  async function handleSubscribe(data: FormDataInputs) {
+    const { password, email } = data;
 
-    if (!email.trim() || !password.trim()) {
-      toast.error("Preencha os campos", { theme: "colored" });
-      return;
+    try {
+      await signUp({ password, email });
+    } catch (error) {
+      if (error) console.log(error);
     }
 
-    await signUp({ password, email });
-
-    setEmail("");
-    setPassword("");
     closeModal();
   }
 
@@ -36,29 +56,33 @@ export function ModalSignUp({ isOpen, closeModal }: ModalSignUpProps) {
         className="mb-6"
       />
 
-      <form className="w-full" onSubmit={handleSubscribe}>
+      <form className="w-full" onSubmit={handleSubmit(handleSubscribe)}>
         <div className="mb-8 flex flex-col gap-3">
-          <Input
-            type="email"
-            placeholder="Seu E-mail"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            shape="secondary"
-            className="focus-effect"
-          />
+          <div className={`flex flex-col gap-1`}>
+            <Input
+              placeholder="E-mail"
+              shape="secondary"
+              className="focus-effect"
+              {...register("email")}
+            />
 
-          <Input
-            type="password"
-            placeholder="Sua senha"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            shape="secondary"
-            className="focus-effect"
-          />
+            <FormError error={errors.email?.message} />
+          </div>
+          <div className={`flex flex-col gap-1`}>
+            <Input
+              type="password"
+              placeholder="Senha"
+              shape="secondary"
+              className="focus-effect"
+              {...register("password")}
+            />
+
+            <FormError error={errors.password?.message} />
+          </div>
         </div>
 
         <footer className="w-full">
-          <Button color="green" className="w-full focus-effect">
+          <Button className="w-full">
             salvar
           </Button>
         </footer>

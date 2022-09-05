@@ -118,7 +118,7 @@ export function ModalAddBarbecue({
             </div>
           </div>
 
-          <Button className="mt-8 w-full text-base focus-effect" color="green">
+          <Button className="mt-8 w-full">
             {isLoading ? "Adicionando..." : "Adicionar"}
           </Button>
         </form>

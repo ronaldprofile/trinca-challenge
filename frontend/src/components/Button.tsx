@@ -11,66 +11,52 @@ export const Button = styled("button", {
   variants: {
     shape: {
       primary: {
+        background: "#FFD836",
+        color: "White",
+        border: "2px solid #FFD836",
+        transition: ".2s all",
+
+        "&:hover": {
+          filter: "brightness(0.85)",
+        },
+
+        "&:focus": {
+          outline: "none",
+        },
+
+        "&:disabled": {
+          cursor: "not-allowed",
+          filter: "brightness(0.75)",
+        },
+      },
+
+      secondary: {
         background: "Black",
         color: "White",
         border: "1px solid Black",
         transition: ".2s all",
-
-        "&:hover": {
-          filter: "brightness(0.9)"
-        },
-
-        "&:focus": {
-          outline: "none"
-        }
       },
 
-      secondary: {
-        background: "transparent",
-        color: "Black",
-        border: "1px solid Black",
+      danger: {
+        background: "#dc2626",
+        color: "White",
+        border: "1px solid #dc2626",
         transition: ".2s all",
+
         "&:hover": {
-          background: "Black",
-          color: "White"
-        }
-      }
+          filter: "brightness(0.80)",
+        },
+      },
     },
 
     color: {
       green: {
-        background: "#34CB79"
-      }
+        background: "#34CB79",
+      },
     },
-
-    danger: {
-      true: {}
-    }
   },
 
-  compoundVariants: [
-    {
-      shape: "secondary",
-      danger: true,
-      css: {
-        "&:hover": {
-          background: "#dc2626",
-          color: "White",
-          border: "1px solid #dc2626"
-        }
-      }
-    },
-
-    {
-      shape: "primary",
-      color: "green",
-      css: {
-        borderColor: "#34CB79"
-      }
-    }
-  ],
-
   defaultVariants: {
-    shape: "primary"
-  }
+    shape: "primary",
+  },
 });

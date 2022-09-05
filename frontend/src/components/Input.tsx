@@ -11,24 +11,32 @@ export const Input = styled("input", {
     shape: {
       primary: {
         background: "White",
+        border: "1px solid transparent",
 
         "&:focus": {
-          border: "1px solid Black",
-          outline: "none"
-        }
+          borderColor: "#fb1",
+          outline: "none",
+          boxShadow: "0 0 0 3px #fea",
+        },
+
+        "&:hover": {
+          borderColor: "#fb1",
+          boxShadow: "0 0 0 3px #fea",
+        },
       },
 
       secondary: {
         background: "#E1FAEC",
         border: "1px solid #d1d5db",
+
         "&:focus": {
-          outline: "none"
-        }
-      }
-    }
+          outline: "none",
+        },
+      },
+    },
   },
 
   defaultVariants: {
-    shape: "primary"
-  }
+    shape: "primary",
+  },
 });
