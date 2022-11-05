@@ -1,0 +1,143 @@
+// Vitest Snapshot v1
+
+exports[`Component Card barbecue > the component snapshot must always be the same 1`] = `
+<a
+  class="w-full p-6 bg-white text-black shadow-lg rounded-sm
+        border-2 border-transparent hover:-translate-y-2 transition-all
+      "
+  href="/details/1"
+  title="ver detalhes"
+>
+  <div
+    class="flex flex-col gap-2"
+  >
+    <time
+      class="font-bold text-base sm:text-[28px]"
+      datetime="2022-10-22T03:00:00.000Z"
+      title="22/10/2022"
+    >
+      22/10
+    </time>
+    <span
+      class="font-bold text-xl text-black/80"
+    >
+      FIFA 23
+    </span>
+  </div>
+  <div
+    class="mt-12 flex items-center justify-between"
+  >
+    <span
+      class="text-sm sm:text-xl font-medium flex items-center gap-3"
+      data-testid="total_members_event"
+    >
+      <svg
+        fill="currentColor"
+        height="24"
+        viewBox="0 0 256 256"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          fill="none"
+          height="256"
+          width="256"
+        />
+        <circle
+          cx="88"
+          cy="108"
+          fill="none"
+          r="52"
+          stroke="currentColor"
+          stroke-miterlimit="10"
+          stroke-width="16"
+        />
+        <path
+          d="M155.4,57.9A54.5,54.5,0,0,1,169.5,56a52,52,0,0,1,0,104"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        />
+        <path
+          d="M16,197.4a88,88,0,0,1,144,0"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        />
+        <path
+          d="M169.5,160a87.9,87.9,0,0,1,72,37.4"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        />
+      </svg>
+      2
+    </span>
+    <span
+      class="text-base sm:text-xl font-medium flex items-center gap-3"
+      data-testid="amount_collected_event"
+    >
+      <svg
+        fill="currentColor"
+        height="24"
+        viewBox="0 0 256 256"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect
+          fill="none"
+          height="256"
+          width="256"
+        />
+        <line
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+          x1="128"
+          x2="128"
+          y1="72"
+          y2="88"
+        />
+        <line
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+          x1="128"
+          x2="128"
+          y1="168"
+          y2="184"
+        />
+        <circle
+          cx="128"
+          cy="128"
+          fill="none"
+          r="96"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        />
+        <path
+          d="M104,168h36a20,20,0,0,0,0-40H116a20,20,0,0,1,0-40h36"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="16"
+        />
+      </svg>
+      R$ 300,00
+    </span>
+  </div>
+</a>
+`;

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { SignOut } from "phosphor-react";
 import { useAuth } from "../context/Auth/AuthContext";

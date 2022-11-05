@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { Users, CurrencyCircleDollar } from "phosphor-react";
 import { formatPrice } from "../utils/formatCurrency";
@@ -29,8 +30,8 @@ export function CardBarbecue({
   );
 
   return (
-    <Link
-      to={`/details/${barbecue.id}`}
+    <a
+      href={`/details/${barbecue.id}`}
       title="ver detalhes"
       className={`w-full p-6 bg-white text-black shadow-lg rounded-sm
         border-2 border-transparent hover:-translate-y-2 transition-all
@@ -62,6 +63,7 @@ export function CardBarbecue({
         {!isFetchingBarbecue ? (
           <span
             className={`text-sm sm:text-xl font-medium flex items-center gap-3`}
+            data-testid="total_members_event"
           >
             <Users size={24} />
             {barbecue.members.length}
@@ -73,6 +75,7 @@ export function CardBarbecue({
         {!isFetchingBarbecue ? (
           <span
             className={`text-base sm:text-xl font-medium flex items-center gap-3`}
+            data-testid="amount_collected_event"
           >
             <CurrencyCircleDollar size={24} />
             {formatPrice(barbecue.amount_collected)}
@@ -81,6 +84,6 @@ export function CardBarbecue({
           <Skeleton width={84} height={25} />
         )}
       </div>
-    </Link>
+    </a>
   );
 }
